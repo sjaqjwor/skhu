@@ -1,0 +1,21 @@
+div.int_center {
+    background: url(images/box_bg.png);
+    height: 900px;
+    padding: 50px 0 0 40px;
+    float : left;
+	width: 60%;
+	border :1px #c0c0c0 solid;
+}
+div.int_left {
+	height:900px;
+	float : left;
+	width: 20%
+}
+div.int_right {
+	height:900px;
+	width : 20%;
+}
+div.int_top {
+	height:20px;
+	width:100%;
+}
