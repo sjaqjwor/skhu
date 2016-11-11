@@ -5,12 +5,20 @@
     http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
     http://www.springframework.org/schema/security
     http://www.springframework.org/schema/security/spring-security-3.2.xsd">
-
+    
     <http auto-config="true">
-        <intercept-url pattern="/user/*" access="ROLE_관리자" />
+        <intercept-url pattern="/main/*" access="ROLE_USER" />
+        <intercept-url pattern="/community/*" access="ROLE_USER" />
+        <intercept-url pattern="/introduce/*" access="ROLE_USER" />
+        <intercept-url pattern="/member/*" access="ROLE_USER" />
+        <intercept-url pattern="/user/*" access="ROLE_USER" />
+        <intercept-url pattern="/task/*" access="ROLE_ADMIN" />
+        
         <form-login
             login-page="/index.do"
-            login-processing-url="/home/login_processing.do"
+            login-processing-url="/login_processing.do"
+            default-target-url="/login_success.do" 
+			authentication-failure-url="/login_failure.do"
             username-parameter="loginId"
             password-parameter="password" />
         <logout

@@ -31,24 +31,21 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
 
 	public Authentication authenticate(String loginId, String password) throws AuthenticationException {
 
-		if(Pattern.matches("^[a-zA-Z]*$", loginId)!=true){
+		if(Pattern.matches("^[a-zA-Z]*$", loginId.substring(0,1))!=true){
+			User user = userMapper.selectByLoginId(loginId);
+			if (user == null)
+				return null;
+			if (user.getU_password().equals(password) == false){
+				return null;
+			}
 			
-		User user = userMapper.selectByLoginId(loginId);
-		if (user == null)
-			return null;
-		if (user.getU_password().equals(password) == false){
-			return null;
+			List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
+			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 			
-		}
-			
-		List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-		grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-		
-		return new MyAuthenticaion(loginId, password, grantedAuthorities, user);
+			return new MyAuthenticaion(loginId, password, grantedAuthorities, user);
 		}
 		
 		else{
-			System.out.println("adasd");
 			Admin admin = adminMapper.selectByLoginId(loginId);
 			if (admin == null)
 				return null;
@@ -58,7 +55,8 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
 			}
 				
 			List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_Admin"));
+			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 			return new MyAuthenticaion_admin(loginId, password, grantedAuthorities, admin);
 		}
 	}
@@ -73,8 +71,8 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
 		private static final long serialVersionUID = 1L;
 		User user;
 
-		public MyAuthenticaion(String loginId, String passwd, List<GrantedAuthority> grantedAuthorities, User user) {
-			super(loginId, passwd, grantedAuthorities);
+		public MyAuthenticaion(String loginId, String password, List<GrantedAuthority> grantedAuthorities, User user) {
+			super(loginId, password, grantedAuthorities);
 			this.user = user;
 		}
 
@@ -90,8 +88,8 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
 		private static final long serialVersionUID = 1L;
 		Admin admin;
 
-		public MyAuthenticaion_admin(String loginId, String passwd, List<GrantedAuthority> grantedAuthorities, Admin admin) {
-			super(loginId, passwd, grantedAuthorities);
+		public MyAuthenticaion_admin(String loginId, String password, List<GrantedAuthority> grantedAuthorities, Admin admin) {
+			super(loginId, password, grantedAuthorities);
 			this.admin = admin;
 		}
 

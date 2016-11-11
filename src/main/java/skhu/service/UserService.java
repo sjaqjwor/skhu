@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
+	//User Service
 	public User getCurrentUser() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication instanceof MyAuthenticationProvider.MyAuthenticaion)
@@ -19,6 +20,17 @@ public class UserService {
 		((MyAuthenticationProvider.MyAuthenticaion) SecurityContextHolder.getContext().getAuthentication())
 				.setUser(user);
 	}
+	
+	public boolean confirm_password(String p1,String p2){
+		if(p1.equals(p2)){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	//Admin Service
 	public static Admin getCurrentAdmin() {
 		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -30,13 +42,5 @@ public class UserService {
 	public static void setCurrentAdmin(Admin admin) {
 		((MyAuthenticationProvider.MyAuthenticaion_admin) SecurityContextHolder.getContext().getAuthentication())
 				.setAdmin(admin);
-	}
-	public boolean confirm_password(String p1,String p2){
-		if(p1.equals(p2)){
-			return true;
-		}
-		else{
-			return false;
-		}
 	}
 }

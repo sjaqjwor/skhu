@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="ko">
 <head>
@@ -16,43 +17,7 @@
 </head>
 <body>
    <div id="page-wrapper">
-
-      <!-- Header -->
-      <div id="header">
-
-         <!-- Logo -->
-         <h1>
-            <p id="logo">함께 맞는 비</p>
-         </h1>
-
-         <!-- Nav -->
-         <nav id="nav">
-         <ul>
-            <li><a href="#"><image class="center-block img-circle img-thumbnail img-responsive" style="width:25px;height:25px;" src="${pageContext.request.contextPath}/resources/images/person.jpg">&nbsp;&nbsp;&nbsp;신성철(7기)</a></li>
-            <li id="first" class="current"><a href="main.jsp">홈</a></li>
-            <li><a href="#">총동문회</a>
-               <ul>
-                  <li><a href="#">기수별 동문명단</a></li>
-                  <li><a href="#">동문회 임원명단</a></li>
-                  <li><a href="#">즐겨찾기</a></li>
-               </ul></li>
-            <li><a href="#">안내</a>
-               <ul>
-                  <li><a href="#">학교소개</a></li>
-                  <li><a href="#">총동문회 회칙</a></li>
-                  <li><a href="#">역대 총장님</a></li>
-                  <li><a href="#">역대 동문회장</a></li>
-               </ul></li>
-            <li><a href="#">커뮤니티</a>
-               <ul>
-                  <li><a href="#">공지사항</a></li>
-                  <li><a href="#">자유게시판</a></li>
-                  <li><a href="#">동문광고</a></li>
-               </ul></li>
-         </ul>
-         </nav>
-
-      </div>
+	<c:import url="../menu.jsp"/>
 
       <section id="banner"> </section>
 
@@ -72,7 +37,7 @@
                   </select>
                   <input type="text" id="search_"
                       />
-                  <input type="image" src="images/search.jpg" id="my_"
+                  <input type="image" src="${pageContext.request.contextPath}/resources/images/search.jpg" id="my_"
                       />
                </form>
             </div>

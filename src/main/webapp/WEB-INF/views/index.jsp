@@ -27,7 +27,6 @@
 					<c:if test="${ param.error == null }">
 					<header id="header">
 					
-					
 						<h1 id="title">성공회대학교 총동창회</h1>
 						
 						<nav>
@@ -39,10 +38,6 @@
 								
 							</ul>
 						</nav>
-						
-						
-						
-						
 					</header>
 				   </c:if>
 				   </sec:authorize>
@@ -83,9 +78,6 @@
 		      </div>
 		    </div>
 		
-		
-		
-		   
 		      <div class="app__logout" style="display:none;">
 		        <svg class="app__logout-icon svg-icon" viewBox="0 0 20 20">
 		          <path d="M6,3 a8,8 0 1,0 8,0 M10,0 10,12"/>

@@ -1,6 +1,5 @@
 package skhu.controller;
 
-
 import skhu.service.*;
 import skhu.model.*;
 import skhu.mapper.*;
@@ -13,31 +12,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/main")
-public class MainController {
+@RequestMapping("/member")
+public class MemberController {
 	
 	@Autowired
 	UserService userService;
 	
-	@Secured("ROLE_USER")
-	@RequestMapping("/home.do")
-    public String home(Model model) {
+	@RequestMapping("/cardinalList.do")
+    public String cardinalList(Model model) {
 		User user = userService.getCurrentUser();
-		Page page = new Page("main");
+		Page page = new Page("member");
 		
         model.addAttribute("user", user);
         model.addAttribute("page",page);
-        return "main/home";
+        return "member/cardinalList";
     }
-	
-	@Secured("ROLE_ADMIN")
-	@RequestMapping("/home_admin.do")
-    public String homeAdmin(Model model) {
-		Admin admin = userService.getCurrentAdmin();
-		Page page = new Page("main");
-		
-		model.addAttribute("admin",admin);
-		model.addAttribute("page",page);
-        return "main/home_admin";
-	}
+
 }
