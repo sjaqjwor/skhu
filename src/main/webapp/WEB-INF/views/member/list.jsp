@@ -14,8 +14,7 @@
 <!--[if lte IE 9]><link rel="stylesheet" href="../assets/css/ie9.css" /><![endif]-->
 
 <!-- Bootstrap Core CSS -->
-<link
-	href="${pageContext.request.contextPath}/resources/assets/css/bootstrap.min.css"
+<link href="${pageContext.request.contextPath}/resources/assets/css/bootstrap.min.css"
 	rel="stylesheet">
 <!-- Custom CSS -->
 <link
@@ -72,6 +71,10 @@
 
 #nav>ul>li.current a {
 	color: #fff;
+}
+.img-thumbnail {
+    background-color: rgba(0,0,0,0.15);
+    border: 0;
 }
 </style>
 </head>

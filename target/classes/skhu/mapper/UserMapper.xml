@@ -8,7 +8,7 @@
     </select>
     
     <select id="selectAll" resultType="skhu.model.User">
-    	SELECT * FROM [User] ORDER BY u_cNumber,u_status desc;;
+    	SELECT * FROM [User] ORDER BY u_cNumber,u_status;
     </select>
     
 	<select id="selectForEmail" resultType="skhu.model.User">

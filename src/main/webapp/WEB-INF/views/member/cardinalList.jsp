@@ -12,16 +12,13 @@
 	href="${pageContext.request.contextPath}/resources/assets/css/main.css" />
 <!--[if lte IE 8]><link rel="stylesheet" href="../assets/css/ie8.css" /><![endif]-->
 <!--[if lte IE 9]><link rel="stylesheet" href="../assets/css/ie9.css" /><![endif]-->
-
 <!-- Bootstrap Core CSS -->
-<link
-	href="${pageContext.request.contextPath}/resources/assets/css/bootstrap.min.css"
+<link href="${pageContext.request.contextPath}/resources/assets/css/bootstrap.min.css"
 	rel="stylesheet">
 <!-- Custom CSS -->
 <link
 	href="${pageContext.request.contextPath}/resources/assets/css/round-about.css"
 	rel="stylesheet">
-
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
@@ -78,6 +75,10 @@
 #nav>ul>li.current a {
 	color: #fff;
 }
+.img-thumbnail {
+    background-color: rgba(0,0,0,0.15);
+    border: 0;
+}
 </style>
 </head>
 
@@ -112,9 +113,11 @@
 						</form>
 
 					</div>
+					
 					<c:if test="${empty list && empty mnglist}">
 						<h2 class="emptyuser">회원이 없습니다</h2>
 					</c:if>
+					
 					<c:forEach var="i" items="${ mnglist }">
 						<div class="col-lg-4 col-sm-6 text-center">
 
@@ -127,14 +130,13 @@
 									src="${pageContext.request.contextPath}/${i.u_photo}"
 									onError="this.src='http://placehold.it/200x200';" alt=""
 									style="width: 200px; height: 200px;">
-
 							</c:if>
 
 							<h3>${i.u_name}
 								<small>${i.u_status}</small>
 							</h3>
 							<p>
-								${i.u_email}<br />image:${pageContext.request.contextPath}/${i.u_photo}
+								${i.u_email}<br />
 							</p>
 
 						</div>
@@ -153,14 +155,13 @@
 									src="${pageContext.request.contextPath}/${i.u_photo}"
 									onError="this.src='http://placehold.it/200x200';" alt=""
 									style="width: 200px; height: 200px;">
-
 							</c:if>
 
 							<h3>${i.u_name}
 								<small>${i.u_status}</small>
 							</h3>
 							<p>
-								${i.u_email}<br />image:${pageContext.request.contextPath}/${i.u_photo}
+								${i.u_email}<br />
 							</p>
 
 						</div>

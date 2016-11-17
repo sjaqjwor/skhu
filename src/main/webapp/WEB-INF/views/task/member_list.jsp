@@ -44,7 +44,12 @@
 	        <tbody>
 	            <c:forEach var="user" items="${ list }">
 	                <tr data-url="edit.do?id=${ user.u_loginId }">
-	                	<td><image style="width:50px;height:50px;" src="${pageContext.request.contextPath}/resources/images/person.jpg"></td>
+	                	<c:if test="${empty user.u_photo }">
+	                		<td><image style="width:50px;height:50px;" src="${pageContext.request.contextPath}/resources/userImages/no_pic.gif"></td>
+	                	</c:if>
+	                	<c:if test="${not empty user.u_photo }">
+	                		<td><image style="width:50px;height:50px;" src="${pageContext.request.contextPath}/resources/userImages/${user.u_photo}"></td>
+	                	</c:if>
 	                    <td>${ user.u_loginId }</td>
 	                    <td>${ user.u_name }</td>
 	                    <td>${ user.u_cNumber }기</td>
@@ -54,7 +59,7 @@
 	                    <td>
 	                    <c:choose>
 					  	  <c:when test="${user.u_count == true }"><image style="width:30px;height:30px;" src="${pageContext.request.contextPath}/resources/images/check.png"></c:when>
- 						  <c:otherwise><image style="width:30px;height:30px;" src="${pageContext.request.contextPath}/resources/images/uncheck.png"></c:otherwise>
+ 						  <c:otherwise></c:otherwise>
 						</c:choose>	                    
 	                    </td>
 	                </tr>
