@@ -7,10 +7,20 @@
         SELECT * FROM [User] WHERE u_loginId = #{u_loginId}
     </select>
     
+    <select id="selectAll" resultType="skhu.model.User">
+    	SELECT * FROM [User] ORDER BY u_cNumber,u_status desc;;
+    </select>
+    
+	<select id="selectForEmail" resultType="skhu.model.User">
+        SELECT * FROM [User] WHERE u_loginId = #{u_loginId} and u_email=#{u_email}
+    </select>
+    
 	<update id="update">
 		UPDATE [USER]
 		SET u_password = #{u_password},
 			u_count = #{u_count}
 		where u_loginId = #{u_loginId}
 	</update>
+	
+	
 </mapper>

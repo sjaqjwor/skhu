@@ -158,6 +158,16 @@ input, button {
   height: 53rem;
   overflow: hidden;
 }
+.demo_1{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -15rem;
+  margin-top: -26.5rem;
+  width: 30rem;
+  height: 53rem;
+  overflow: hidden;
+}
 
 .login {
   position: relative;

@@ -64,19 +64,16 @@
 		          </svg>
 		          <input type="password" class="login__input pass" name="password" placeholder="비밀번호"/>
 		        </div>
-		        <div class="ke" style="color:red; font-size:14px; margin-top:12px; visibility:hidden">아이디 또는 비밀번호를 다시 확인하세요.</div>
-					 <div class="ke" style="color:red; font-size:14px; visibility:hidden">등록되지 않은 아이디이거나, 아이디 또는 비밀번호를 잘못 입력하셨습니다</div>
+		        <div class="ke" style="color:red; font-size:14px; margin-top:12px;display:none;">아이디 또는 비밀번호를 다시 확인하세요.</div>
+				
 		        <button type="button" class="login__submit" id="log">로그인</button>
+		        <button type="button" class="login__submit" id="search" style="display:none;">비밀번호 찾기</button>
 		        <button type="button" class="login__submit" id="close">닫기</button>
 		        
 		      </form>
 		    </div>
-		      <div class="app__logout" style="display:none;">
-		        <svg class="app__logout-icon svg-icon" viewBox="0 0 20 20">
-		          <path d="M6,3 a8,8 0 1,0 8,0 M10,0 10,12"/>
-		        </svg>
-		      </div>
-		    </div>
+		    
+		   
 		
 		      <div class="app__logout" style="display:none;">
 		        <svg class="app__logout-icon svg-icon" viewBox="0 0 20 20">
@@ -89,7 +86,7 @@
 		 <div class="demo_" style="display:none;">
 		    <div class="login" >
 		      <div class="login__check" style="top:12rem;!important"></div>
-		      <form class="login__form" method="POST" action="confirm_password.do"
+		      <form class="login__form"
 		       style="top:40% !important;">
 		        <div class="login__row">
 		          <svg class="login__icon pass svg-icon" viewBox="0 0 20 20">
@@ -104,15 +101,45 @@
 		          </svg>
 		          <input type="password" class="login__input pass" name="password_2" placeholder="비밀번호"/>
 		        </div>
-		        <c:if test="${not empty p_error }">
-		         	<div>다시 입력</div>
-		        </c:if>
-		        <button type="submit" class="login__submit" style="margin-top:40%;">확인</button>
+		        <div class="ke" style="color:red; font-size:14px; margin-top:12px; display:none;">두 비밀번호가 일치하지 않습니다.</div>
+				<div class="ke1" style="color:red; font-size:14px; margin-top:12px; display:none;">비빌번호 (8글자 )이하 입니다.</div>
+		        <button type="button" id="password_"class="login__submit" style="margin-top:25%;">확인</button>
 		       
 		        
 		      </form>
 		      </div>
 		      </div>
+		        <div class="demo_1" style="display:none;">
+		    <div class="login" >
+		      <div class="login__check"></div>
+		      <form class="login__form">
+		        <div class="login__row">
+		          <svg class="login__icon name svg-icon" viewBox="0 0 20 20">
+		            <path d="M0,20 a10,8 0 0,1 20,0z M10,0 a4,4 0 0,1 0,8 a4,4 0 0,1 0,-8" />
+		          </svg>
+		         
+		          <input type="text" class="login__input name" name="loginId" placeholder="휴대폰번호"/>
+		        </div>
+		        <div class="login__row">
+		          <svg class="login__icon pass svg-icon" viewBox="0 0 20 20">
+		            <path d="M0,20 20,20 20,8 0,8z M10,13 10,16z M4,8 a6,8 0 0,1 12,0" />
+		          </svg>
+		          <input type="email" class="login__input pass" name="email" placeholder="이메일"/>
+		        </div>
+		        <div class="ke" style="color:red; font-size:14px; margin-top:12px;display:none;">일치하는 회원이 없습니다.</div>
+		         <button type="button" class="login__submit" id="search_pass">확인</button>
+		         <button type="button" class="login__submit" id="pass_close">닫기</button>
+		      
+		       
+		        
+		      </form>
+		    </div>
+		      <div class="app__logout" style="display:none;">
+		        <svg class="app__logout-icon svg-icon" viewBox="0 0 20 20">
+		          <path d="M6,3 a8,8 0 1,0 8,0 M10,0 10,12"/>
+		        </svg>
+		      </div>
+		    </div>
 		
 		
 		

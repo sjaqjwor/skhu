@@ -7,145 +7,141 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/introduce3.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/main.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/introduce.css" />
 <!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 <!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
-<!-- Bootstrap Core CSS -->
-<link href="${pageContext.request.contextPath}/resources/assets/css/bootstrap.min.css" rel="stylesheet">
 <link
 	href="http://netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css"
 	rel="stylesheet">
-<!-- Custom CSS -->
-<link href="${pageContext.request.contextPath}/resources/assets/css/round-about.css" rel="stylesheet">
+<title>성공회대 총동문회</title>
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script>
+	$(function() {
+		$("#p2").click(function() {
+			location.href = "../introduce/introduce3_content.do"
 
-<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+		});
+	});
+</script>
+<script>
+	var fk = function() {
+		var ac = "";
+		if (matchMedia("screen and (max-width: 840px)").matches) {
+			ac = "+"
+			$("#write")
+					.html("<img src=${pageContext.request.contextPath}/resources/images/pencil.png style=height:30px>");
+		} else {
+			ac = "글쓰기"
+			$("#write").html("<input type=image src=${pageContext.request.contextPath}/resources/images/write.jpg>");
+		}
+	}
+</script>
+<script>
+	$(function() {
+		$("#write").click(function() {
+			location.href = "../introduce/introduce3_write.do"
+		});
 
-<link
-	href="http://netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css"
-	rel="stylesheet">
-<title>역대 총장</title>
-
+	});
+</script>
 </head>
 <body>
-
 	<div id="page-wrapper">
 
 	<c:import url="../menu.jsp"/>
-
+	
 		<section id="banner"> </section>
 
 		<!-- Highlights -->
 		<section class="wrapper style1">
 		<div class="container">
-			<div class="container main">
+			<div class="row 200%">
+				<section class="board">
 
-
-
-				<!-- Team Members Row -->
-				<div class="row">
-					<div class="col-lg-12">
-						<h3 class="page-header">&nbsp역대 총장</h3>
-
-					</div>
-					<div class="col-lg-4 col-sm-6 text-center">
-						<img class="img-circle img-responsive img-center"
-							src="http://placehold.it/200x200" alt="">
-						<h3>
-							신성철 <small>총장</small>
-						</h3>
-						<p>
-							....<br />
-						</p>
-					</div>
-					<div class="col-lg-4 col-sm-6 text-center">
-						<img class="img-circle img-responsive img-center"
-							src="http://placehold.it/200x200" alt="">
-						<h3>
-							이준우 <small>4대 총장</small>
-						</h3>
-						<p>...</p>
-					</div>
-					<div class="col-lg-4 col-sm-6 text-center">
-						<img class="img-circle img-responsive img-center"
-							src="http://placehold.it/200x200" alt="">
-						<h3>
-							정보석 <small>3대 총장</small>
-						</h3>
-						<p>....</p>
-					</div>
-					<div class="col-lg-4 col-sm-6 text-center">
-						<img class="img-circle img-responsive img-center"
-							src="http://placehold.it/200x200" alt="">
-						<h3>
-							이승기 <small>2대 총장</small>
-						</h3>
-						<p>
-							... <strike>....</strike>
-						</p>
-					</div>
-					<div class="col-lg-4 col-sm-6 text-center">
-						<img class="img-circle img-responsive img-center"
-							src="http://placehold.it/200x200" alt="">
-						<h3>
-							김지희<small>1대 총장</small>
-						</h3>
-						<p>
-							....<br />....
-						</p>
-					</div>
-					<div class="col-lg-4 col-sm-6 text-center">
-						<img class="img-circle img-responsive img-center"
-							src="http://placehold.it/200x200" alt="">
-						<h3>
-							.... <small>....</small>
-						</h3>
-						<p>.......</p>
+				<div class="box highlight">
+					<div class="boad">
+						<div class="col-lg-12">
+							<h3 class="page-header">동문회칙</h3>
+						</div>
+						<div id="write">
+							<script>
+								fk()
+							</script>
+						</div>
 					</div>
 				</div>
 
-				<hr>
+				</section>
 
-				<!-- Footer -->
+				<section class="board"">
+				<h1>
+					<table class="box highlight" id="board_">
+					
+						<tr>
+							<td colspan="5"></td>
+						</tr>
+						<tr>
+							<td>번호</td>
+							<td>제목</td>
+							<td>작성자</td>
+							<td>작성일</td>
+							<td>조회수</td>
+						</tr>
+						<tr id="p2">
+							<td>4</td>
+							<td>제 4장 재정</td>
+							<td>관리자</td>
+							<td>16.9.22</td>
+							<td>12</td>
+						</tr>
+						<tr>
+							<td>3</td>
+							<td>제 3장 회의</td>
+							<td>관리자</td>
+							<td>16.9.21</td>
+							<td>21</td>
+						</tr>
+						<tr>
+							<td>2</td>
+							<td>제 2장 회원 및 임원</td>
+							<td>관리자</td>
+							<td>16.9.20</td>
+							<td>131</td>
+						</tr>
+						<tr>
+							<td>1</td>
+							<td>제 1장 총칙</td>
+							<td>관리자</td>
+							<td>16.9.19</td>
+							<td>229</td>
+						</tr>
 
-				<div class="row">
-					<div class="col-lg-12">
-						<p>Copyright &copy; Boseok</p>
+					</table>
+					<div id="pa">
+						<ul>
+							<li>1</li>
+
+						</ul>
 					</div>
-					<!-- /.col-lg-12 -->
-				</div>
-				<!-- /.row -->
+					<form id="search">
+						<select id="myselect">
+							<option>제목</option>
+							<option>글쓴이</option>
+							<option>조화수</option>
+						</select> <input type="text" value="" /> <input type="image"
+							src="${pageContext.request.contextPath}/resources/images/search.jpg" id="my">
+					</form>
+				</section>
+
 
 			</div>
-		</div>
-	</div>
-	<!-- 오른쪽공백 -->
 
-	<!-- ********** -->
-	</div>
-
-	<!-- Footer -->
-	<div id="footer">
-
-		<!-- Icons -->
-		<ul class="icons">
-			
-		</ul>
-
-		<!-- Copyright -->
-		<div class="copyright">
-			<ul class="menu">
-				<li>&copy; Untitled. All rights reserved</li>
-				<li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-			</ul>
 		</div>
 
-	</div>
+		</section>
+
 	</div>
 
 	<!-- Scripts -->

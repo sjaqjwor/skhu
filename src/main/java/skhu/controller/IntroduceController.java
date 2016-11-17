@@ -17,12 +17,13 @@ public class IntroduceController {
 	
 	@Autowired
 	UserService userService;
-
+	@Autowired IntroduceMapper introduceMapper;
 	@RequestMapping("/introduce1.do")
     public String introduce1(Model model) {
 		User user = userService.getCurrentUser();
 		Page page = new Page("introduce");
-		
+		Introduce introduce = introduceMapper.select();
+		model.addAttribute("introduce",introduce.getI_text());
         model.addAttribute("user", user);
         model.addAttribute("page",page);
         return "introduce/introduce1";
@@ -45,13 +46,34 @@ public class IntroduceController {
         model.addAttribute("page",page);
         return "introduce/introduce3";
     }
-	@RequestMapping("/introduce4.do")
-    public String cardinalList(Model model) {
+	@RequestMapping("/introduce3_write.do")
+    public String introduce3_write(Model model) {
 		User user = userService.getCurrentUser();
 		Page page = new Page("introduce");
 		
         model.addAttribute("user", user);
         model.addAttribute("page",page);
-        return "introduce/introduce4";
+        return "introduce/introduce3_write";
     }
+	@RequestMapping("/introduce3_content.do")
+    public String introduce3_content(Model model) {
+		User user = userService.getCurrentUser();
+		Page page = new Page("introduce");
+		
+        model.addAttribute("user", user);
+        model.addAttribute("page",page);
+        return "introduce/introduce3_content";
+    }
+	@RequestMapping(value="/introduce1_edit.do",method=RequestMethod.GET)
+	public String introduce1_edit(Model model) {
+		return "introduce/introduce1_edit";
+	}
+    @RequestMapping(value="/introduce1_edit.do", method=RequestMethod.POST)
+    public String create(@RequestParam("i_text") String i_text,Model model) {
+    	introduceMapper.update(i_text);
+    	//introduceMapper.update(introduce);
+        return "redirect:introduce1.do";
+    }
+
+
 }

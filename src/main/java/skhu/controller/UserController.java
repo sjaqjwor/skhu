@@ -17,7 +17,7 @@ public class UserController {
 	
 	@Autowired
 	UserService userService;
-
+	
 	@RequestMapping("/edit.do")
     public String edit(Model model) {
 		User user = userService.getCurrentUser();

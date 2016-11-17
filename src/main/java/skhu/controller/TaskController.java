@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/task")
 public class TaskController {
 	
-	@Autowired
-	UserService userService;
+	@Autowired UserService userService;
+	@Autowired UserMapper userMapper;
 	
 	@RequestMapping("/message.do")
     public String message(Model model) {
@@ -27,6 +27,18 @@ public class TaskController {
         model.addAttribute("page",page);
         return "task/message";
     }
+	
+	@RequestMapping("/member_list.do")
+    public String member_list(Model model) {
+		Admin admin = userService.getCurrentAdmin();
+		Page page = new Page("task");
+		
+        model.addAttribute("admin", admin);
+        model.addAttribute("page",page);
+        model.addAttribute("list", userMapper.selectAll());
+        return "task/member_list";
+    }
+	
 	@RequestMapping("/member_register.do")
     public String member_register(Model model) {
 		Admin admin = userService.getCurrentAdmin();
@@ -36,6 +48,7 @@ public class TaskController {
         model.addAttribute("page",page);
         return "task/member_register";
     }
+	
 	@RequestMapping("/request.do")
     public String request(Model model) {
 		Admin admin = userService.getCurrentAdmin();
