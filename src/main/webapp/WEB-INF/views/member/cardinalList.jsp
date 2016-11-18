@@ -32,8 +32,9 @@
 <title>성공회대 총동문회</title>
 <style>
 .emptyuser {
-	margin-right: auto;
-	margin-left: 50px;
+    margin-right: auto;
+    margin-left: 500px;
+    margin-bottom: 100px;
 }
 
 .col-lg-12 {
@@ -79,6 +80,11 @@
     background-color: rgba(0,0,0,0.15);
     border: 0;
 }
+
+.page-header {
+    margin: -40px 0 30px;
+}
+
 </style>
 </head>
 
@@ -101,13 +107,13 @@
 						</c:if>
 						<form method="post" class="searchForm"
 							style="margin-left: 12px; margin-top: -15px">
-							<select name="searchsel" style="width: 150px; height: 27px;">
+							<select name="searchsel" style="width: 150px; height: 30px;">
 								<!-- //이름 초성검색 핸드폰번호로 검색가능 소속지위로 검색가능 -->
 								<option value="0">이름</option>
 								<option value="1">폰번호</option>
 								<option value="2">소속지위</option>
 							</select> <input type="text" class="searchMem" id="search"
-								name="searchtxt" style="width: 250px; height: 25px;"> </input>
+								name="searchtxt" style="width: 250px; height: 30px;"> </input>
 							<button type="submit" class="btn btn-small search"
 								style="width: 50px; margin-bottom: 10px">검색</button>
 						</form>
@@ -121,16 +127,12 @@
 					<c:forEach var="i" items="${ mnglist }">
 						<div class="col-lg-4 col-sm-6 text-center">
 
-							<c:if test="${empty i.u_photo}">
-								<img class="img-circle img-responsive img-center"
-									src="http://placehold.it/200x200" alt="">
-							</c:if>
-							<c:if test="${not empty i.u_photo }">
-								<img class="img-circle img-responsive img-center"
-									src="${pageContext.request.contextPath}/${i.u_photo}"
-									onError="this.src='http://placehold.it/200x200';" alt=""
-									style="width: 200px; height: 200px;">
-							</c:if>
+							<c:if test="${empty i.u_photo }">
+	                			<img class="img-circle img-responsive img-center" style="width:200px;height:200px;" src="${pageContext.request.contextPath}/resources/userImages/no_pic.gif">
+	                		</c:if>
+	                		<c:if test="${not empty i.u_photo }">
+		                		<img class="img-circle img-responsive img-center" style="width:200px;height:200px;" src="${pageContext.request.contextPath}/resources/userImages/${i.u_photo}">
+	                		</c:if>
 
 							<h3>${i.u_name}
 								<small>${i.u_status}</small>
@@ -146,16 +148,12 @@
 					<c:forEach var="i" items="${ list }">
 						<div class="col-lg-4 col-sm-6 text-center">
 
-							<c:if test="${empty i.u_photo}">
-								<img class="img-circle img-responsive img-center"
-									src="http://placehold.it/200x200" alt="">
-							</c:if>
-							<c:if test="${not empty i.u_photo }">
-								<img class="img-circle img-responsive img-center"
-									src="${pageContext.request.contextPath}/${i.u_photo}"
-									onError="this.src='http://placehold.it/200x200';" alt=""
-									style="width: 200px; height: 200px;">
-							</c:if>
+							<c:if test="${empty i.u_photo }">
+	                			<img class="img-circle img-responsive img-center" style="width:200px;height:200px;" src="${pageContext.request.contextPath}/resources/userImages/no_pic.gif">
+	                		</c:if>
+	                		<c:if test="${not empty i.u_photo }">
+		                		<img class="img-circle img-responsive img-center" style="width:200px;height:200px;" src="${pageContext.request.contextPath}/resources/userImages/${i.u_photo}">
+	                		</c:if>
 
 							<h3>${i.u_name}
 								<small>${i.u_status}</small>

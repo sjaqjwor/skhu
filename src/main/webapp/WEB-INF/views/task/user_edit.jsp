@@ -16,7 +16,7 @@
 <title>성공회대 총동문회</title>
 <style>
 #nav > ul > li.current:before {
-    bottom: -0.4em;
+    bottom: -0.6em;
 }
 input[type="text"], input[type="password"], input[type="email"], textarea {
 	width:75%;
@@ -62,18 +62,19 @@ input[type="text"], input[type="password"], input[type="email"], textarea {
 			
 	  <fieldset>
 	  
+	  <form:hidden path="u_id"/> 
+	  
 	  	<div class="control-group">
 	      <label class="control-label">아이디</label>
 	      <div class="controls">
-	        <form:input path="u_loginId" readonly="true" class="input-xlarge" style="height:25px; float:left;"/>
-	        <button id="changeId" class="btn btn-default" style="margin-left: 5px; line-height:15px;">변경</button>
+	        <form:input path="u_loginId" class="input-xlarge" style="height:25px;"/>
 	      </div>
 	    </div>
 	    
 	    <div class="control-group">
 	      <label class="control-label">비밀번호</label>
 	      <div class="controls">
-	        <form:password path="u_password" showPassword="true" class="input-xlarge" style="height:25px;"/>
+	        <form:password path="u_password" showPassword="true" class="input-xlarge" style="height:30px;"/>
 	      </div>
 	    </div>
 	    
@@ -87,17 +88,32 @@ input[type="text"], input[type="password"], input[type="email"], textarea {
 	    <div class="control-group">
 	      <label class="control-label">기수</label>
 	      <div class="controls">
-	      	<form:input path="u_cNumber" readonly="true" class="input-xlarge" style="height:25px;"/>
+	      	<form:select path="u_cNumber" class="input-xlarge" style="height:30px;">
+	            <form:option value="1"/>
+	            <form:option value="2"/>
+	            <form:option value="3"/>
+	            <form:option value="4"/>
+	            <form:option value="5"/>
+	            <form:option value="6"/>
+	        </form:select>
 	      </div>
 	    </div>
 	    
 	    <div class="control-group">
 	      <label class="control-label" for="name">등급</label>
 	      <div class="controls">
-	        <form:input path="u_status" readonly="true" class="input-xlarge" style="height:25px;"/>
+		    <form:select path="u_status" class="input-xlarge" style="height:30px;">
+	            <form:option value="일반회원" />
+	            <form:option value="1기 회장" />
+	            <form:option value="2기 회장" />
+	            <form:option value="3기 회장" />
+	            <form:option value="4기 회장" />
+	            <form:option value="5기 회장" />
+	            <form:option value="6기 회장" />
+	        </form:select>
 	      </div>
 	    </div>
-	    
+
 	    <div class="control-group">
 	      <label class="control-label" for="name">생년월일</label>
 	      <div class="controls">
@@ -156,6 +172,7 @@ input[type="text"], input[type="password"], input[type="email"], textarea {
 	      <!-- Button -->
 	      <div class="controls">
 	        <button id="saveButton" type="submit" class="btn btn-primary">저장</button>
+            <a href="member_list.do" class="btn">목록으로 나가기</a>
 	      </div>
 	      
 	    </div>

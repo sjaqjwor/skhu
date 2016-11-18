@@ -19,6 +19,13 @@
 <script
    src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="me.js"></script>
+<script>
+    $(function() {
+        $("tbody tr").click(function() {
+            location.href = $(this).attr("data-url");
+        });
+    });
+</script>
 </head>
 <body>
    <div id="page-wrapper">
@@ -26,6 +33,7 @@
 	<c:import url="../menu.jsp"/>
 
 	<div class="container">
+	    <hr />
 	    <h1>회원 목록</h1>
 	    <hr />
 	    <table class="table table-bordered">
@@ -43,7 +51,7 @@
 	        </thead>
 	        <tbody>
 	            <c:forEach var="user" items="${ list }">
-	                <tr data-url="edit.do?id=${ user.u_loginId }">
+	                <tr data-url="user_edit.do?id=${ user.u_loginId }">
 	                	<c:if test="${empty user.u_photo }">
 	                		<td><image style="width:50px;height:50px;" src="${pageContext.request.contextPath}/resources/userImages/no_pic.gif"></td>
 	                	</c:if>

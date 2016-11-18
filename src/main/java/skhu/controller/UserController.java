@@ -17,14 +17,34 @@ public class UserController {
 	
 	@Autowired
 	UserService userService;
+	@Autowired
+	UserMapper userMapper;
 	
-	@RequestMapping("/edit.do")
+	@RequestMapping(value="/edit.do", method = RequestMethod.GET)
     public String edit(Model model) {
 		User user = userService.getCurrentUser();
 		Page page = new Page("user");
 		
         model.addAttribute("user", user);
         model.addAttribute("page",page);
+        return "user/edit";
+    }
+	
+	@RequestMapping(value="/edit.do", method = RequestMethod.POST)
+    public String edit(User user, Model model) {
+		Page page = new Page("user");
+		
+        String message = userService.validateBeforeUpdate(user);
+        if (message == null) {
+            userMapper.myUpdate(user);
+            userService.setCurrentUser(user);
+            model.addAttribute("success", "저장했습니다.");
+        } else{
+            model.addAttribute("error", message);
+            if(message.equals("이름을 입력하세요."))
+            	user.setU_name(userService.getCurrentUser().getU_name());
+        }
+        model.addAttribute("page",page);        
         return "user/edit";
     }
 }

@@ -4,6 +4,8 @@ import skhu.model.User;
 import skhu.model.Admin;
 
 import java.util.Calendar;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -79,4 +81,28 @@ public class UserService {
 			return "01";
 		}
 	}
+	
+	public String validateBeforeUpdate(User user) {
+        String s = user.getU_password();
+        if (StringUtils.isBlank(s))
+            return "비밀번호를 입력하세요.";
+
+        s = user.getU_name();
+        if (StringUtils.isBlank(s))
+            return "이름을 입력하세요.";
+
+        s = user.getU_phone();
+        if (StringUtils.isBlank(s))
+            return "휴대폰 번호를 입력하세요.";
+        
+        s = user.getU_email();
+        if (StringUtils.isBlank(s))
+            return "이메일을 입력하세요.";
+
+        s = user.getU_address();
+        if (StringUtils.isBlank(s))
+            return "주소를 입력하세요.";
+
+        return null;
+    }
 }

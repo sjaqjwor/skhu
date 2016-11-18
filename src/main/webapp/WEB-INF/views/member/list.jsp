@@ -93,14 +93,14 @@
 			<div class="container main">
 				<form method="post" action="${pageContext.request.contextPath}/member/cardinalList.do" class="searchForm"
 					style="margin-left: 12px; margin-top: -15px">
-					<select name="searchsel" style="width: 200px; height: 27px;">
+					<select name="searchsel" style="width: 200px; height: 30px;">
 						<!-- //이름 초성검색 핸드폰번호로 검색가능 소속지위로 검색가능 -->
 						<option value="0">이름</option>
 						<option value="1">폰번호</option>
 						<option value="2">소속지위</option>
 					</select> 
 					<input type="text" class="searchMem" id="search" name="searchtxt"
-						style="width: 250px; height: 25px;"> </input>
+						style="width: 250px; height: 30px;"> </input>
 					<button type="submit" class="btn btn-small search"
 						style="width: 50px; margin-bottom: 10px">검색</button>
 				</form>
