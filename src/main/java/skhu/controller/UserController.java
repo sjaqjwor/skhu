@@ -3,6 +3,11 @@ package skhu.controller;
 import skhu.service.*;
 import skhu.model.*;
 import skhu.mapper.*;
+
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -18,7 +23,11 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	@Autowired
+	RequestService requestService;
+	@Autowired
 	UserMapper userMapper;
+	@Autowired
+	RequestMapper requestMapper;
 	
 	@RequestMapping(value="/edit.do", method = RequestMethod.GET)
     public String edit(Model model) {
@@ -46,5 +55,74 @@ public class UserController {
         }
         model.addAttribute("page",page);        
         return "user/edit";
+    }
+	
+	@RequestMapping(value="/requestId.do", method = RequestMethod.GET)
+    public String request(Model model) {
+		User user = userService.getCurrentUser();
+		
+		R_UpdateId r_updateId = requestMapper.alreadyRequest(user.getU_id());
+		if(r_updateId==null){
+			r_updateId = new R_UpdateId();
+			r_updateId.setU_id(user.getU_id());
+			r_updateId.setRu_originId(user.getU_loginId());
+			r_updateId.setRu_state("기본");
+		}else{
+			model.addAttribute("success", "요청중입니다.");
+		}
+		model.addAttribute("r_UpdateId",r_updateId);
+        model.addAttribute("user", user);
+		
+        return "user/requestId";
+    }
+	
+	@RequestMapping(value="/requestId.do", method = RequestMethod.POST)
+    public String request(R_UpdateId r_updateId, Model model) throws ParseException {
+		String message = requestService.validateBeforeRequest(r_updateId);
+		
+		r_updateId.setRu_time(requestService.currentTime());
+		
+		if (message == null) {
+			r_updateId.setRu_state("대기");
+            requestMapper.insert(r_updateId);
+            model.addAttribute("success", "요청중입니다.");
+        } else{
+            model.addAttribute("error", message);
+        }
+        
+        return "user/requestId";
+    }
+	@RequestMapping(value="/requestDrop.do", method = RequestMethod.GET)
+    public String requestDrop(Model model) {
+		User user = userService.getCurrentUser();
+		
+		R_DropUser r_dropUser = requestMapper.alreadyRequestDrop(user.getU_id());
+		if(r_dropUser==null){
+			r_dropUser = new R_DropUser();
+			r_dropUser.setU_id(user.getU_id());
+			r_dropUser.setRd_state("기본");
+		}else{
+			model.addAttribute("success", "요청중입니다.");
+		}
+		model.addAttribute("r_DropUser",r_dropUser);
+        model.addAttribute("user", user);
+		
+        return "user/requestDrop";
+    }
+	@RequestMapping(value="/requestDrop.do", method = RequestMethod.POST)
+    public String requestDrop(R_DropUser r_dropUser, Model model) throws ParseException {
+		String message = requestService.validateBeforeRequestD(r_dropUser);
+		
+		r_dropUser.setRd_time(requestService.currentTime());
+		
+		if (message == null) {
+			r_dropUser.setRd_state("대기");
+            requestMapper.insertDrop(r_dropUser);
+            model.addAttribute("success", "요청중입니다.");
+        } else{
+            model.addAttribute("error", message);
+        }
+        
+        return "user/requestDrop";
     }
 }

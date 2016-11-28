@@ -1,22 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-             
+
 <mapper namespace="skhu.mapper.MemberMapper">
-	<select id="selectByGisuMng" resultType="skhu.model.User">
-		select * from [USER] where u_cNumber = #{selgisu} and u_status like '_기%' order by u_status desc
-    </select>
-    <select id="selectByGisu" resultType="skhu.model.User">
-        select * from [USER] where u_cNumber = #{selgisu} and u_status not like '_기%' order by u_status desc
-    </select>
-    <select id="selectByName" resultType="skhu.model.User">
-    	SELECT * FROM [USER] WHERE PATINDEX([dbo].SearchHanTxt(#{searchtxt}) + '%' , U_NAME) > 0 order by u_status desc
-    </select>
-    <select id="selectByPhone" resultType="skhu.model.User">
-    	select * from [USER] where CHARINDEX(#{searchtxt}, u_phone) > 0 order by u_status desc
-    </select>
-    <select id="selectByStatus" resultType="skhu.model.User">
-    	SELECT * FROM [USER] WHERE PATINDEX(dbo.SearchHanTxt(#{searchtxt}) + '%' , U_status) > 0 order by u_status desc
-    </select>
-    
+   <select id="selectByGisu" resultType="skhu.model.User">
+      exec [dbo].searchselp #{selgisu}, 0, null
+   </select>
+   <select id="selectSearch" resultType="skhu.model.User">
+      exec [dbo].searchselp #{selgisu}, #{searchsel}, #{searchtxt}
+   </select>
+   <select id="selectByUid" resultType="skhu.model.User">
+      select * from [user] where u_id = #{uid}
+   </select>
 </mapper>

@@ -13,24 +13,22 @@
   <ul>
     <li class="${page.user}">
     	<a href="/skhu/user/edit.do">
-    		<c:if test="${empty user.u_photo }">
-    			<image class="center-block img-circle img-thumbnail img-responsive" style="width:25px;height:25px;" src="${pageContext.request.contextPath}/resources/userImages/no_pic.gif" >
-    		</c:if>
-    		<c:if test="${not empty user.u_photo }">
-    			<image class="center-block img-circle img-thumbnail img-responsive" style="width:25px;height:25px;" src="${pageContext.request.contextPath}/resources/userImages/${user.u_photo }" >
-    		</c:if>
+    		<image class="center-block img-circle img-thumbnail img-responsive" style="width:25px;height:25px;"
+            src="${pageContext.request.contextPath}/resources/userImages/${user.u_photo }"
+            onError='this.src="${pageContext.request.contextPath}/resources/userImages/no_pic.gif"'>
     		&nbsp;&nbsp;&nbsp;${user.u_name}(${user.u_cNumber}기)
     	</a>
     	<ul>
+	    	<li><a href="/skhu/user/edit.do">내정보</a></li>
 	     	<li><a href="/skhu/main/logout.do">로그아웃</a></li>
 	 	</ul>
     </li>
-    <li id="first" class="${page.main}"><a href="/skhu/main/home.do">홈</a></li>
-    <li class="${page.member}"><a href="/skhu/member/list.do">총동문회</a>
-	  <ul>
-	     <li><a href="/skhu/member/list.do">동문명단</a></li>
-	  </ul>
-  	</li>
+    <li id="first" class="${page.main}"><a href="${pageContext.request.contextPath}/main/home.do">홈</a></li>
+    <li class="${page.member}"><a href="${pageContext.request.contextPath}/member/cardinalList.do?selgisu=0">총동문회</a>
+    	<ul>
+        	<li><a href="${pageContext.request.contextPath}/member/cardinalList.do?selgisu=0">동문명단</a></li>
+     	</ul>
+    </li>
     <li class="${page.introduce}"><a href="/skhu/introduce/introduce1.do">안내</a>
 	  <ul>
 		<li><a href="/skhu/introduce/introduce1.do">인문학습원 소개</a></li>
@@ -60,11 +58,11 @@
 	 	</ul>
       </li>
       <li id="first" class="${page.main}"><a href="/skhu/main/home_admin.do">홈</a></li>
-    <li class="${page.member}"><a href="/skhu/member/list.do">총동문회</a>
-	  <ul>
-	     <li><a href="/skhu/member/list.do">동문명단</a></li>
-	  </ul>
-  	</li>
+    <li class="${page.member}"><a href="${pageContext.request.contextPath}/member/cardinalList.do?selgisu=0">총동문회</a>
+     	<ul>
+       		 <li><a href="${pageContext.request.contextPath}/member/cardinalList.do?selgisu=0">동문명단</a></li>
+     	</ul>
+    </li>
     <li class="${page.introduce}"><a href="/skhu/introduce/introduce1.do">안내</a>
 	  <ul>
 		<li><a href="/skhu/introduce/introduce1.do">인문학습원 소개</a></li>
@@ -78,12 +76,25 @@
 	    <li><a href="/skhu/community/board.do">자유게시판</a></li>
 	  </ul>
 	</li>
-    <li class="${page.task}"><a href="/skhu/task/member_list.do">업무<span class="badge">3</span></a>
+    <li class="${page.task}"><a href="/skhu/task/member_list.do">업무
+    	<c:if test="${rc.total ne 0 }">
+    		<span class="badge">${rc.total}</span>
+    	</c:if>
+    	</a>
       <ul>
        	<li><a href="/skhu/task/member_list.do">회원목록</a></li>
        	<li><a href="/skhu/task/member_register.do">회원등록</a></li>
-       	<li><a href="/skhu/task/message.do">쪽지함<span class="badge">2</span></a></li>
-       	<li><a href="/skhu/task/request.do">아이디변경<span class="badge">1</span></a></li>
+       	<li><a href="/skhu/task/message.do">쪽지함</a></li>
+       	<li><a href="/skhu/task/requestId.do">아이디변경
+       	<c:if test="${rc.countId ne 0 }">
+    		<span class="badge">${rc.countId}</span>
+    	</c:if>
+       	</a></li>
+       	<li><a href="/skhu/task/requestDrop.do">회원탈퇴
+       	<c:if test="${rc.countDrop ne 0 }">
+    		<span class="badge">${rc.countDrop}</span>
+    	</c:if>
+    	</a></li>
       </ul>
     </li>
    </ul>

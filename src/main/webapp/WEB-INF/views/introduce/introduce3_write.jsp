@@ -9,13 +9,14 @@
 <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/board.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/main.css" />
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/smarteditor/js/HuskyEZCreator.js" charset="utf-8"></script>
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/smarterditor/js/HuskyEZCreator.js" charset="utf-8"></script>
+<script src="${pageContext.request.contextPath}/resources/smarterditor/js/init.js" type="text/javascript"></script>
 <!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 <!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
 <link
 	href="http://netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css"
 	rel="stylesheet">
+<script src="${pageContext.request.contextPath}/resources/smarterditor/js/init.js" type="text/javascript"></script>	
 <title>성공회대 총동문회</title>
 </head>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> 
@@ -75,36 +76,30 @@ var fk=function () {
 
 				<section class="board">
 
-				<form>
+				<form method="post">
 					<table class="box highlight" id="board_2">
 						<tr>
 							<td colspan="4"></td>
 						</tr>
 						<tr>
 							<td>제목</td>
-							<td><input type="text"></td>
+							<td><input type="text" name="r_title"></td>
 							<td style="text-align:right;">작성자</td>
 						<td>관리자</td>
 						</tr>
 						<tr>
 							<td class="file_">첨부파일</td>
 							<td class="filebox"><button for="ex_file">파일찾기..</button>
- 							 <input type="file" id="ex_file"> </td>
-							
+ 							 <input type="file" id="ex_file"> </td>	
 						</tr>
 						<tr>
-							<td  colspan="4"><textarea rows="10" cols="100" name="smt" id="smt"></textarea>
+							<td  colspan="4">
+								<textarea rows="20" name="r_content" class="smarteditor2" id="body"></textarea>
 							</td>
-						
-						
-						<tr>
-
 						</tr>
 						<tr>
 							<td colspan="4"></td>
 						</tr>
-
-
 					</table>
 					<div id="pa2">
 						<ul>

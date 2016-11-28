@@ -7,6 +7,10 @@
         SELECT * FROM [User] WHERE u_loginId = #{u_loginId}
     </select>
     
+    <select id="selectByStatus" resultType="skhu.model.User">
+        SELECT * FROM [User] WHERE u_cNumber = #{u_cNumber} and u_status = #{u_status}
+    </select>
+    
     <select id="selectAll" resultType="skhu.model.User">
     	SELECT * FROM [User] ORDER BY u_cNumber,u_status;
     </select>
@@ -60,5 +64,35 @@
     		u_openJobStatus = #{u_openJobStatus}
     	WHERE u_loginId = #{u_loginId}
     </update>
-	
+    
+    <select id="selectPage" resultType="skhu.model.User">
+        <![CDATA[
+        SELECT *
+        FROM
+            ( SELECT *,ROW_NUMBER() OVER (ORDER BY u_cNumber,u_status desc) 행번호
+              FROM [User]
+              WHERE
+		          (#{srchNumber} = 0 AND PATINDEX(dbo.SearchHanTxt(#{srchName}) + '%' , u_name) > 0) OR
+		          (#{srchNumber} = u_cNumber AND PATINDEX(dbo.SearchHanTxt(#{srchName}) + '%' , u_name) > 0) 
+            ) subquery
+        WHERE 행번호 > (#{currentPage} - 1) * #{pageSize} AND
+              행번호 <= #{currentPage} * #{pageSize}
+        ORDER BY 행번호
+        ]]>
+    </select>
+
+    <select id="selectCount" resultType="int">
+        SELECT COUNT(*)
+        FROM [User]
+        WHERE
+            (#{srchNumber} = 0 AND PATINDEX(dbo.SearchHanTxt(#{srchName}) + '%' , u_name) > 0 ) OR
+            (#{srchNumber} = u_cNumber AND PATINDEX(dbo.SearchHanTxt(#{srchName}) + '%' , u_name) > 0) 
+    </select>
+    <insert id="registerUser">
+    	INSERT [USER] ([u_id],[u_loginId],[u_password],[u_name],[u_cNumber],[u_status],[u_birth],[u_phone],[u_email]
+           ,[u_address],[u_jobPhone],[u_jobStatus],[u_photo],[u_openBirth],[u_openPhone],[u_openEmail]
+           ,[u_openAddress],[u_openJobPhone],[u_openJobStatus],[u_openPhoto],[u_count])
+        VALUES (NEWID(),#{u_phone},#{u_password},#{u_name},#{u_cNumber},#{u_status},#{u_birth},#{u_phone},#{u_email}
+           ,#{u_address},#{u_jobPhone},#{u_jobStatus},null,0,0,0,0,0,0,0,0)
+    </insert>
 </mapper>

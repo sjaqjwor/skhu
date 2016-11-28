@@ -4,4 +4,14 @@
 	<select id="selectByLoginId" resultType="skhu.model.Admin">
 		SELECT * FROM [Admin] WHERE a_loginId=#{a_loginId}
 	</select>
+	<select id="countRequestId" resultType="Integer">
+		SELECT COUNT(*)
+		FROM [R_UpdateId]
+		WHERE ru_state='대기'
+	</select>
+	<select id="countRequestDrop" resultType="Integer">
+		SELECT COUNT(*)
+		FROM [R_UpdateId]
+		WHERE ru_state='대기'
+	</select>
 </mapper>

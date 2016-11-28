@@ -1,17 +1,24 @@
 package skhu.service;
 
-import skhu.model.User;
-import skhu.model.Admin;
+import skhu.model.*;
+import skhu.mapper.AdminMapper;
+import skhu.mapper.UserMapper;
 
 import java.util.Calendar;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
+	
+	@Autowired
+    AdminMapper adminMapper;
+	
 	//User Service
 	public User getCurrentUser() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -105,4 +112,38 @@ public class UserService {
 
         return null;
     }
+	
+	public RequestCount getCount(){
+		RequestCount rc = new RequestCount();
+        int countId = adminMapper.countRequestId();
+        int countDrop = adminMapper.countRequestDrop();
+        rc.setCountId(countId);
+        rc.setCountDrop(countDrop);
+        rc.setTotal(countId+countDrop);
+        return rc;
+	}
+	public String Same_write_user(Notice notice,User user){
+	      if(notice.getN_writerId().equals(user.getU_id())){
+	         return "inherit";
+	      }
+	      else
+	         return "none";
+	}
+	public String board_Same_write_user(Board board,User user){
+	      if(board.getB_writerId().equals(user.getU_id())){
+	         return "inherit";
+	      }
+	      else
+	         return "none";
+	}
+	public String status(String status){
+	      if(Pattern.matches("^[0-9a-zA-Z]*$",status.substring(0,1))==true||status.substring(0,1).equals("회")
+	            ||status.substring(0,1).equals("부")){
+	         return "inherit";
+	         
+	      }
+	      else{
+	         return "none";
+	      }
+	}
 }

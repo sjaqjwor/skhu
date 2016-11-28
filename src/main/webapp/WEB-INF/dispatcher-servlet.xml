@@ -59,9 +59,10 @@
       </property>
    </bean>
     
-	<mvc:annotation-driven content-negotiation-manager="contentNegotiationManager"/>
+    <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager"/>
 	<bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
     	<!-- Turn off working out content type based on URL file extension, should fall back to looking at the Accept headers -->
     	<property name="favorPathExtension" value="false" />
 	</bean>
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>	
 </beans>

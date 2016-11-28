@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="skhu.mapper.CommunityMapper">
+   <select id="selectAll" resultType="skhu.model.Notice">
+      <![CDATA[
+      SELECT * FROM ( 
+         SELECT *, ROW_NUMBER() OVER (ORDER BY n_id desc) 행번호 
+         FROM [Notice]
+         where
+         #{srchType} = 0 or
+         (#{srchType} = 1 AND n_title like '%'+#{srchText}+'%') OR
+         (#{srchType} = 2 AND  n_writerName like '%'+#{srchText}+'%')
+         ) subquery 
+         WHERE 행번호 > (#{currentPage} - 1) * #{pageSize} AND 행번호 <= #{currentPage} * #{pageSize} 
+         ORDER BY 행번호
+      ]]>
+   </select>
+   <select id="selectById" resultType="skhu.model.Notice">
+      select *
+      from[Notice] 
+      where
+      n_id=#{n_id}
+   </select>
+   <select id="select_file_byn_Id" resultType="skhu.model.File">
+      select *
+      from [file]
+      where n_id=#{n_id};
+   </select>
+   <select id="select_file_byf_Id" resultType="skhu.model.File">
+      select *
+      from [file]
+      where f_id=#{f_id};
+   </select>
+   <update id="notice_update">
+      update [notice]
+      set n_title=#{n_title},
+         n_content=#{n_content},
+         n_writeTime=GETDATE()
+      where n_id=#{n_id};
+   </update>
+      <update id="notice_file_update">
+      update [file]
+      set f_name=#{f_name},
+         n_size=#{f_size},
+      where f_id=#{f_id};
+   </update>
+   <select id="max" resultType="int">
+      select max(n_id)
+      from [Notice]
+   </select>
+   <delete id="delete_comment">
+      delete from [comment]
+      where c_id=#{c_id};
+   </delete>
+   <select id="selectCount" resultType="int">
+      SELECT COUNT(*)
+      FROM [notice]
+      where   #{srchType} = 0 or
+         (#{srchType} = 1 AND n_title like '%'+#{srchText}+'%') OR
+         (#{srchType} = 2 AND  n_writerName like '%'+#{srchText}+'%' )
+      </select>
+   <insert id="notice_insert">
+      insert into
+      [notice](n_writerId,n_writerName,n_title,n_content,n_writeTime)
+      values(#{n_writerId},#{n_writerName},#{n_title},#{n_content},GETDATE())
+   </insert>
+   <insert id="comment_insert">
+      insert into
+      [Comment](b_id,n_id,c_writerId,c_writeTime,c_writerName,c_content)
+      values(null,#{n_id},#{c_writerId},GETDATE(),#{c_writerName},#{c_content})
+   </insert>
+   <select id="notice_comment" resultType="skhu.model.Comment">
+      select *,u.u_cNumber
+      from [Comment] c join [user] u on c.c_writerId=u.u_id
+      where n_id =#{n_id};
+   </select>
+   <insert id="insert_file">
+      insert into [file](b_id,f_name,f_size,n_id,f_data,f_extension)
+      values(null,#{f_name},#{f_size},#{n_id},#{f_data},#{f_extension})
+   </insert>
+   <delete id="notice_Delete">
+      delete from [notice]
+      where n_id=#{n_id};
+   </delete>
+   <delete id="file_delete">
+   delete from [file]
+   where f_id=#{f_id}
+   </delete>
+   <select id="board_selectAll" resultType="skhu.model.Board">
+      <![CDATA[
+      SELECT * FROM ( 
+         SELECT *, ROW_NUMBER() OVER (ORDER BY b_id desc) 행번호 
+         FROM [board]
+         where
+         #{srchType} = 0 or
+         (#{srchType} = 1 AND b_title like '%'+#{srchText}+'%') OR
+         (#{srchType} = 2 AND  b_writerName like '%'+#{srchText}+'%')
+         ) subquery 
+         WHERE 행번호 > (#{currentPage} - 1) * #{pageSize} AND 행번호 <= #{currentPage} * #{pageSize} 
+         ORDER BY 행번호
+      ]]>
+   </select>
+   <select id="board_selectById" resultType="skhu.model.Board">
+      select *
+      from[board] 
+      where
+      b_id=#{b_id}
+   </select>
+   <select id="board_select_file_byb_Id" resultType="skhu.model.File">
+      select *
+      from [file]
+      where b_id=#{b_id};
+   </select>
+   <update id="board_update">
+      update [board]
+      set b_title=#{b_title},
+         b_content=#{b_content},
+         b_writeTime=GETDATE()
+      where b_id=#{b_id};
+   </update>
+      <update id="board_file_update">
+      update [file]
+      set f_name=#{f_name},
+         f_size=#{f_size},
+      where f_id=#{f_id};
+   </update>
+   <select id="board_max" resultType="int">
+      select max(b_id)
+      from [board]
+   </select>
+   <select id="board_selectCount" resultType="int">
+      SELECT COUNT(*)
+      FROM [board]
+      where   #{srchType} = 0 or
+         (#{srchType} = 1 AND b_title like '%'+#{srchText}+'%') OR
+         (#{srchType} = 2 AND  b_writerName like '%'+#{srchText}+'%' )
+      </select>
+   <insert id="board_insert">
+      insert into
+      [board](b_writerId,b_writerName,b_title,b_content,b_writeTime)
+      values(#{b_writerId},#{b_writerName},#{b_title},#{b_content},GETDATE())
+   </insert>
+   
+   <insert id="board_insert_file">
+      insert into [file](b_id,f_name,f_size,n_id,f_data,f_extension)
+      values(#{b_id},#{f_name},#{f_size},null,#{f_data},#{f_extension})
+   </insert>
+   <delete id="board_Delete">
+      delete from [board]
+      where b_id=#{b_id};
+   </delete>
+   <delete id="board_file_delete">
+   delete from [file]
+   where f_id=#{f_id}
+   </delete>
+
+   
+</mapper>

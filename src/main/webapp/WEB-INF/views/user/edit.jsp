@@ -7,8 +7,7 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/main.css" />
+	<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/main.css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/user.css" />
 	<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 	<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
@@ -39,8 +38,6 @@ input[type="text"], input[type="password"], input[type="email"], textarea {
 				</div>
 			</div>
 	    <hr style="	height: 5px; background-color: #b7822b;">
-	    
-	   </div>
 	   <!-- Form -->
 	   <form:form method="post" class="form-horizontal" modelAttribute="user">
 		  <div id="image_box" class="col-md-3">	  
@@ -52,7 +49,7 @@ input[type="text"], input[type="password"], input[type="email"], textarea {
 			      <image class="center-block img-circle img-thumbnail img-responsive" style="display:block; width:350px;height:350px; margin-top:10px;" src="${pageContext.request.contextPath}/resources/userImages/${user.u_photo}">
 			    </c:if>
 			    <form:hidden path="u_photo"/> 
-		        <button id="imageButton" class="btn btn-success">사진 업로드</button>
+		        <button id="imageButton" type="button" class="btn btn-success">사진 업로드</button>
 		      </div>
 		  </div>
 		 <div class="col-md-9 personal-info">
@@ -66,7 +63,7 @@ input[type="text"], input[type="password"], input[type="email"], textarea {
 	      <label class="control-label">아이디</label>
 	      <div class="controls">
 	        <form:input path="u_loginId" readonly="true" class="input-xlarge" style="height:25px; float:left;"/>
-	        <button id="changeId" class="btn btn-default" style="margin-left: 5px; line-height:15px;">변경</button>
+	        <button id="changeId" class="btn btn-default" type="button" style="margin-left: 5px; line-height:15px;">변경</button>
 	      </div>
 	    </div>
 	    
@@ -87,7 +84,8 @@ input[type="text"], input[type="password"], input[type="email"], textarea {
 	    <div class="control-group">
 	      <label class="control-label">기수</label>
 	      <div class="controls">
-	      	<form:input path="u_cNumber" readonly="true" class="input-xlarge" style="height:25px;"/>
+	      	<input type="text" value ="${user.u_cNumber }기" readonly="true" class="input-xlarge" style="height:25px;"/>
+	      	<form:hidden path="u_cNumber" label="${user.u_cNumber}" class="input-xlarge" style="height:25px;"/>
 	      </div>
 	    </div>
 	    
@@ -156,6 +154,7 @@ input[type="text"], input[type="password"], input[type="email"], textarea {
 	      <!-- Button -->
 	      <div class="controls">
 	        <button id="saveButton" type="submit" class="btn btn-primary">저장</button>
+	        <button id="dropButton" class="btn btn-danger" type="button" style="margin-left: 5px;">회원탈퇴</button>
 	      </div>
 	      
 	    </div>
@@ -178,8 +177,6 @@ input[type="text"], input[type="password"], input[type="email"], textarea {
 </div>
 
     </section>
-	
-
 
 			<!-- Footer -->
 				<div id="footer">
@@ -196,10 +193,12 @@ input[type="text"], input[type="password"], input[type="email"], textarea {
 
 		<!-- Scripts -->
 			<script src="${pageContext.request.contextPath}/resources/assets/js/jquery.min.js"></script>
+			<script src="${pageContext.request.contextPath}/resources/assets/js/jquery.popupwindow.js"></script>
 			<script src="${pageContext.request.contextPath}/resources/assets/js/jquery.dropotron.min.js"></script>
 			<script src="${pageContext.request.contextPath}/resources/assets/js/skel.min.js"></script>
 			<script src="${pageContext.request.contextPath}/resources/assets/js/util.js"></script>
 			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
 			<script src="${pageContext.request.contextPath}/resources/assets/js/main.js"></script>
+			<script src="${pageContext.request.contextPath}/resources/assets/js/user.js"></script>
 </body>
 </html>

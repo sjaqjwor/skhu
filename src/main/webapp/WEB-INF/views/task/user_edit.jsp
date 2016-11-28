@@ -52,7 +52,7 @@ input[type="text"], input[type="password"], input[type="email"], textarea {
 			      <image class="center-block img-circle img-thumbnail img-responsive" style="display:block; width:350px;height:350px; margin-top:10px;" src="${pageContext.request.contextPath}/resources/userImages/${user.u_photo}">
 			    </c:if>
 			    <form:hidden path="u_photo"/> 
-		        <button id="imageButton" class="btn btn-success">사진 업로드</button>
+		        <button id="imageButton" type="button" class="btn btn-success">사진 업로드</button>
 		      </div>
 		  </div>
 		 <div class="col-md-9 personal-info">
@@ -89,12 +89,12 @@ input[type="text"], input[type="password"], input[type="email"], textarea {
 	      <label class="control-label">기수</label>
 	      <div class="controls">
 	      	<form:select path="u_cNumber" class="input-xlarge" style="height:30px;">
-	            <form:option value="1"/>
-	            <form:option value="2"/>
-	            <form:option value="3"/>
-	            <form:option value="4"/>
-	            <form:option value="5"/>
-	            <form:option value="6"/>
+	            <form:option value="1" label="1기"/>
+	            <form:option value="2" label="2기"/>
+	            <form:option value="3" label="3기"/>
+	            <form:option value="4" label="4기"/>
+	            <form:option value="5" label="5기"/>
+	            <form:option value="6" label="6기"/>
 	        </form:select>
 	      </div>
 	    </div>
@@ -104,12 +104,8 @@ input[type="text"], input[type="password"], input[type="email"], textarea {
 	      <div class="controls">
 		    <form:select path="u_status" class="input-xlarge" style="height:30px;">
 	            <form:option value="일반회원" />
-	            <form:option value="1기 회장" />
-	            <form:option value="2기 회장" />
-	            <form:option value="3기 회장" />
-	            <form:option value="4기 회장" />
-	            <form:option value="5기 회장" />
-	            <form:option value="6기 회장" />
+	            <form:option value="회장" />
+	            <form:option value="부회장" />
 	        </form:select>
 	      </div>
 	    </div>
@@ -172,7 +168,7 @@ input[type="text"], input[type="password"], input[type="email"], textarea {
 	      <!-- Button -->
 	      <div class="controls">
 	        <button id="saveButton" type="submit" class="btn btn-primary">저장</button>
-            <a href="member_list.do" class="btn">목록으로 나가기</a>
+            <a href="member_list.do?${paginationM.queryString }" class="btn">목록으로 나가기</a>
 	      </div>
 	      
 	    </div>

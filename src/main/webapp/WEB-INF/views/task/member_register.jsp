@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
    pageEncoding="UTF-8"%>
-   <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="ko">
 <head>
@@ -10,164 +11,96 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/main.css" />
 <!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 <!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/register.css" />
 <link
    href="http://netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css"
    rel="stylesheet">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/register.css" />
 <title>성공회대 총동문회</title>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> 
 <script>
-$(document).ready(function(){
-	  var fileTarget = $('.filebox .upload-hidden');
+function checkFileType(filePath) {
+    var fileFormat = filePath.split(".");
+    if (fileFormat.indexOf("xlsx") > -1) {
+        return true;
+    } else {
+        return false;
+    }
+}
+	
+function upload() {
+    var file = $("#excelFile").val();
+    if (file == "" || file == null) {
+    	alert("파일을 선택해주세요.");
+        return false;
+    } else if (!checkFileType(file)) {
+    	alert("엑셀 파일만 업로드 가능합니다.");
+        return false;
+    }
+    if (confirm("업로드 하시겠습니까?")) {
+    	$("#excelForm").submit();        
+	}
+}
 
-	  fileTarget.on('change', function(){  // 값이 변경되면
-	    if(window.FileReader){  // modern browser
-	      var filename = $(this)[0].files[0].name;
-	    } 
-	    else {  // old IE
-	      var filename = $(this).val().split('/').pop().split('\\').pop();  // 파일명만 추출
-	    }
-	    
-	    // 추출한 파일명 삽입
-	    $(this).siblings('.upload-name').val(filename);
-	  });
-	}); 
+function register(){
+	$('#userForm').submit();
+}
 </script>
 </head>
 <body>
-   <div id="page-wrapper">
-	<c:import url="../menu.jsp"/>
+   <c:import url="../menu.jsp"/>
     
-    <section class="wrapper style1">
       <div class="container">
-         <div class="row 200%">
-            <section class="me">
-            <div class="box highlight">
-            <form method="post" action="fileUpload.do" enctype="multipart/form-data">
+      	<hr />
+	   		 <h1>회원 등록</h1>
+	    <hr />
+	    
                
-               <i class="icon major fa-registered"></i>
-               <button class="bt2"><i class="fa fa-arrow-right"></i></button>
-               <h3>회원등록</h3>
-               
-               
-              <div class="filebox">
- 				 <input class="upload-name" value="파일선택" disabled="disabled">
-  				<label for="ex_filename">업로드</label> 
-  				<input type="file" id="ex_filename" class="upload-hidden"> 
-				</div>
-				
-				</form>
-            </div>
-           
-            </section>
-            <form class="me1">
-            <section >
-            <div class="box">
-            <table class="re1">
-            <tr>
-            <td>기수</td>
-            <td>이름</td>
-            <td>전화번호</td>
-            <td>이메일</td>
-            <td>승인</td>
-            </tr>
-            <tr>
-            <td>1기</td>
-            <td>이승기</td>
-            <td>01091476976</td>
-            <td>lsklsk45@naver.com</td>
-            <td><input type="checkbox"></td>
-            </tr>
-              <tr>
-            <td>1기</td>
-            <td>이승기</td>
-            <td>01091476976</td>
-            <td>lsklsk45@naver.com</td>
-            <td><input type="checkbox"></td>
-            </tr>
-              <tr>
-            <td>1기</td>
-            <td>이승기</td>
-            <td>01091476976</td>
-            <td>lsklsk45@naver.com</td>
-            <td><input type="checkbox"></td>
-            </tr>
-              <tr>
-            <td>1기</td>
-            <td>이승기</td>
-            <td>01091476976</td>
-            <td>lsklsk45@naver.com</td>
-            <td><input type="checkbox"></td>
-            </tr>
-              <tr>
-            <td>1기</td>
-            <td>이승기</td>
-            <td>01091476976</td>
-            <td>lsklsk45@naver.com</td>
-            <td><input type="checkbox"></td>
-            </tr>
-              <tr>
-            <td>1기</td>
-            <td>이승기</td>
-            <td>01091476976</td>
-            <td>lsklsk45@naver.com</td>
-            <td><input type="checkbox"></td>
-            </tr>
-              <tr>
-            <td>1기</td>
-            <td>이승기</td>
-            <td>01091476976</td>
-            <td>lsklsk45@naver.com</td>
-            <td><input type="checkbox"></td>
-            </tr>
-              <tr>
-            <td>1기</td>
-            <td>이승기</td>
-            <td>01091476976</td>
-            <td>lsklsk45@naver.com</td>
-            <td><input type="checkbox"></td>
-            </tr>
-              <tr>
-            <td>1기</td>
-            <td>이승기</td>
-            <td>01091476976</td>
-            <td>lsklsk45@naver.com</td>
-            <td><input type="checkbox"></td>
-            </tr>
-              <tr>
-            <td>1기</td>
-            <td>이승기</td>
-            <td>01091476976</td>
-            <td>lsklsk45@naver.com</td>
-            <td><input type="checkbox"></td>
-            </tr>
-              <tr>
-            <td>1기</td>
-            <td>이승기</td>
-            <td>01091476976</td>
-            <td>lsklsk45@naver.com</td>
-            <td><input type="checkbox"></td>
-            </tr>
-            
-            
-            </table>
-            </div>
-           	
-            </section>
-            <button class="re">등록</button>
-            </form>
-          
-           
-          
-           
-         </div>
-      </div>
-      </section>
-
-    
+			<form id="excelForm" enctype="multipart/form-data" method="post" action="upload.do" >
+        		<input id="excelFile" type="file" name="excelFile"/>
+        		<button id="uploadButton" type="button" onclick="upload()" class="btn btn-success" style="margin-bottom: 5px;">업로드</button>
+    		</form>
+    		
+    		<form:form id="userForm" method="post" action="register.do" modelAttribute="userForm" >
+    		<table class="table table-bordered" style="margin-top:15px; margin-bottom:15px;">
+	        <thead>
+	            <tr>
+	            	<th style="width:50px;">번호</th>
+	            	<th style="width:70px;">이름</th>
+	                <th style="width:50px;">기수</th>
+	                <th style="width:100px;">등급</th>
+	   				<th style="width:100px;">생년월일</th>
+	   				<th>핸드폰</th>
+	   				<th>이메일</th>
+	   				<th>주소</th>
+	   				<th style="width:100px;">직장전화</th>
+	   				<th style="width:100px;">직장지위</th>           
+	            </tr>
+	        </thead>
+	        <c:forEach var="item" items="${userForm.users}" varStatus="status">
+	        		<tr>
+	        			<td align="Center">${status.count }</td>
+	        			<td><input name="users[${status.index }].u_name" value="${item.u_name }" style="width:100%; border: 0; text-align: center"/></td>
+		                <td><input name="users[${status.index }].u_cNumber" value="${item.u_cNumber }" style="width:100%; border: 0; text-align: center"/></td>
+		                <td><input name="users[${status.index }].u_status" value="${item.u_status }" style="width:100%; border: 0; text-align: center"/></td>
+	   					<td><input name="users[${status.index }].u_birth" value="${item.u_birth }" style="width:100%; border: 0; text-align: center"/></td>
+	   					<td><input name="users[${status.index }].u_phone" value="${item.u_phone }" style="width:100%; border: 0; text-align: center"/></td>
+	   					<td><input name="users[${status.index }].u_email" value="${item.u_email }" style="width:100%; border: 0; text-align: center"/></td>
+	   					<td><input name="users[${status.index }].u_address" value="${item.u_address }" style="width:100%; border: 0; text-align: center"/></td>
+	   					<td><input name="users[${status.index }].u_jobPhone" value="${item.u_jobPhone }" style="width:100%; border: 0; text-align: center"/></td>
+	   					<td><input name="users[${status.index }].u_jobStatus" value="${item.u_jobStatus }" style="width:100%; border: 0; text-align: center"/></td>
+	                </tr>
+	        </c:forEach>
+                  
+                  
+            </table> 
+            <hr/>
+               <div id="buttonParty">
+	               <input type="submit" name="btn" onclick="register()" style="background-color:white
+		               ;border:1px solid #ccc9c9; color:black;" value="회원등록" >
+               </div>
+            </form:form>   
 
       </div>
-   </div>
 
    <!-- Scripts -->
    <script src="${pageContext.request.contextPath}/resources/assets/js/jquery.min.js"></script>

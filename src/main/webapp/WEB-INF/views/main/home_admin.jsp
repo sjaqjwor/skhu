@@ -30,16 +30,15 @@
             <div class="box highlight">
                <i class="icon major fa-search"></i>
                <h3>검색</h3>
-               <form>
-                  <select id="myOption">
-                  <option>기수</option>
-                  <option>자유게시판</option>
-                  <option>공지사항</option>
-                  </select>
-                  <input type="text" id="search_"
-                      />
-                  <input type="image" src="${pageContext.request.contextPath}/resources/images/search.jpg" id="my_"
-                      />
+               <form method="post" action="${pageContext.request.contextPath}/member/cardinalList.do?selgisu=0">
+                  <select name="searchsel" id="myOption">
+                     <option value="0">검색없음</option>
+                     <option value="1">이름</option>
+                     <option value="2">폰번호</option>
+                     <option value="3">소속지위</option>
+                  </select> 
+                  <input type="text" name="searchtxt" id="search_" /> 
+                  <input type="image" src="${pageContext.request.contextPath}/resources/images/search.jpg" id="my_" />
                </form>
             </div>
             </section>
@@ -47,18 +46,20 @@
             <div class="box highlight">
                <i class="icon major fa-pencil"></i>
                <h3>공지사항</h3>
-               <li>2016 동계 해외교류 봉사프로...</li> <br />
-               <li>지진발생시 행동요령</li> <br />
-               <li>[학부] 2016학년도 2학기 수...</li> <br />
+               <c:forEach var="k" items="${plist }">
+                  <li style="margin:5.5%; font-size:20px; overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">
+                  <a style="text-decoration:none; color:black;"href="../community/notice_content.do?n_id=${k.n_id}">${k.n_title }</a></li>
+               </c:forEach>
             </div>
             </section>
             <section class="4u 12u(narrower)">
             <div class="box highlight">
                <i class="icon major fa-smile-o"></i>
                <h3>자유게시판</h3>
-               <li>반응형 웹사이트 만들기...</li> <br />
-               <li>신성철 동문 잘생기지 않..</li> <br />
-               <li>10월달 함께 맞는비 모임..</li> <br />
+               <c:forEach var="b" items="${blist }">
+                  <li style="margin:5.5%; font-size:20px; overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">
+                     <a style="text-decoration:none; color:black;"href="../community/board_content.do?b_id=${b.b_id}">${b.b_title }</a></li>
+               </c:forEach>
             </div>
             </section>
          </div>
