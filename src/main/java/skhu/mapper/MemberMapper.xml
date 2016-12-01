@@ -12,4 +12,12 @@
    <select id="selectByUid" resultType="skhu.model.User">
       select * from [user] where u_id = #{uid}
    </select>
+   <update id="updateMng">
+      update [dbp1].[dbo].[USER]
+      set u_status = #{ustatus}
+      where u_id = #{u_id};
+      update [dbp1].[dbo].[USER]
+      set u_status = #{u_status}
+      where u_id = #{uid}
+   </update>
 </mapper>

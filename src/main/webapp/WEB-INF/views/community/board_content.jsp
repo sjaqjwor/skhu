@@ -95,7 +95,7 @@ $(function(){
                      <td style="text-align: left;padding-left: 3%;     width:150px;">작성자</td>
                      <td style="float:left;">${board.b_writerName }</td>
                      <td >작성일</td>
-                     <td style="width:200px"><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${ board.b_writeTime }" /></td>
+                     <td style="width:200px"><fmt:formatDate pattern="yyyy-MM-dd" value="${ board.b_writeTime }" /></td>
                   </tr>
                   <tr>
                      <td style="text-align: left;padding-left: 3%;">첨부파일</td>

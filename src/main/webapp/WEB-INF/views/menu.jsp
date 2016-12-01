@@ -27,6 +27,9 @@
     <li class="${page.member}"><a href="${pageContext.request.contextPath}/member/cardinalList.do?selgisu=0">총동문회</a>
     	<ul>
         	<li><a href="${pageContext.request.contextPath}/member/cardinalList.do?selgisu=0">동문명단</a></li>
+        	<c:if test="${user.u_status eq \"회장\"||user.u_status eq \"부회장\"}">
+            	<li class="${page.member}"><a href="/skhu/member/member_mail.do">메일전송</a></li>
+         	</c:if>
      	</ul>
     </li>
     <li class="${page.introduce}"><a href="/skhu/introduce/introduce1.do">안내</a>
@@ -84,7 +87,6 @@
       <ul>
        	<li><a href="/skhu/task/member_list.do">회원목록</a></li>
        	<li><a href="/skhu/task/member_register.do">회원등록</a></li>
-       	<li><a href="/skhu/task/message.do">쪽지함</a></li>
        	<li><a href="/skhu/task/requestId.do">아이디변경
        	<c:if test="${rc.countId ne 0 }">
     		<span class="badge">${rc.countId}</span>

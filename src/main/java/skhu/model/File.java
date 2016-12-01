@@ -8,6 +8,16 @@ public class File {
    Integer n_id;
    byte[] f_data;
    String f_extension;
+   int r_id;
+
+   public int getR_id() {
+      return r_id;
+   }
+
+   public void setR_id(int r_id) {
+      this.r_id = r_id;
+   }
+
    public String getF_extension() {
       return f_extension;
    }
@@ -31,6 +41,7 @@ public class File {
    public void setF_id(Integer f_id) {
       this.f_id = f_id;
    }
+
    public Integer getB_id() {
       return b_id;
    }

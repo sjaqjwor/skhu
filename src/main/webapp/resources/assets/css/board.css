@@ -8,7 +8,13 @@
    url(http://fonts.googleapis.com/earlyaccess/nanumbrushscript.css);
 
 @media screen and (max-width: 1680px) {
-   
+   .true{
+      width:20px;
+      height:20px;
+   }
+   .false{
+      display:none;
+   }
    .upload-name {
       width: 170px !important;
       display: inline-block !important;

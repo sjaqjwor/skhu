@@ -1,5 +1,6 @@
 package skhu.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Board {
@@ -9,7 +10,15 @@ public class Board {
    String b_title;
    String b_content;
    Date b_writeTime;
-   public int getB_id() {
+   boolean b_file;
+
+public boolean getB_file() {
+   return b_file;
+}
+public void setB_file(boolean b_file) {
+   this.b_file = b_file;
+}
+public int getB_id() {
       return b_id;
    }
    public void setB_id(int b_id) {
@@ -43,6 +52,7 @@ public class Board {
       return b_writeTime;
    }
    public void setB_writeTime(Date b_writeTime) {
+      
       this.b_writeTime = b_writeTime;
    }
 }

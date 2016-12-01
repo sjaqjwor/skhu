@@ -10,7 +10,14 @@ public class Notice {
    String n_content;
    Date n_writeTime;
    String f_name;
-   public String getF_name() {
+   boolean n_file;
+   public boolean getN_file() {
+   return n_file;
+}
+public void setN_file(boolean n_file) {
+   this.n_file = n_file;
+}
+public String getF_name() {
       return f_name;
    }
    public void setF_name(String f_name) {

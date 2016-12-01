@@ -71,17 +71,19 @@ textarea {
 }
 </style>
 <body>
-   <div id="page-wrapper">
+   <form method="post" enctype="multipart/form-data">
 
-      <c:import url="../menu.jsp" />
+      <div id="page-wrapper">
 
-      <section id="banner"> </section>
+         <c:import url="../menu.jsp" />
 
-      <!-- Highlights -->
-      <section class="wrapper style1">
-      <div class="container">
-         <div class="row 200%">
-         <section class="me">
+         <section id="banner"> </section>
+
+         <!-- Highlights -->
+         <section class="wrapper style1">
+         <div class="container">
+            <div class="row 200%">
+            <section class="me">
             <div class="box highlight">
                <div id="right_section">
                   <i class="icon major fa-smile-o"></i>
@@ -93,17 +95,15 @@ textarea {
                </div>
             </div>
             </section>
-            <section class="board">
-            <div class="box highlight">
-               <div class="boad">
-                  <h3>동문회칙</h3>
-                  <div id="write"></div>
-               </div>
-            </section>
+               <section class="board">
+               <div class="box highlight">
+                  <div class="boad">
+                     <h3>수정</h3>
+                     <div id="write"></div>
+                  </div>
+               </section>
 
-            <section class="board">
-
-            <form method="post" enctype="multipart/form-data">
+               <section class="board">
 
                <table class="box highlight" id="board_2">
                   <tr>
@@ -111,53 +111,78 @@ textarea {
                   </tr>
                   <tr>
                      <td>제목</td>
-                     <td><input type="text" name="r_title"></td>
+                     <td><input type="text" name="r_title"
+                        value="${rule.r_title }"></td>
                      <td style="text-align: right;">작성자</td>
                      <td>관리자</td>
                   </tr>
                   <tr>
                      <td class="file_">첨부파일</td>
-                     <td class="filebox"><input type="file" name="file">
-                     </td>
+                     <c:choose>
+                        <c:when test="${files==null}">
+                           <td >
+                              <div class="filebox"><input type="file" name="file">
+                           </td>
+                        </c:when>
+                        <c:otherwise>
+                           <td>
+                              <div class="files">${files.f_name}</div>
+                           </td>
+                        </c:otherwise>
+                     </c:choose>
+                     <td colspan="2"><button type="submit" class="btn btn-small" name="cmd"
+                           value="deleteFile">
+                           <i class="icon icon-remove"></i> 파일 삭제
+                        </button></td>
                   </tr>
                   <tr>
-                     <td colspan="4"><textarea rows="20" name="r_content"
-                           class="smarteditor2" id="body"></textarea></td>
+                     <td colspan="4"><textarea rows="14" cols="100"
+                           name="r_content" class="smarteditor2" id="body">${rule.r_content }</textarea>
+                     </td>
                   </tr>
                   <tr>
                      <td colspan="4"></td>
                   </tr>
                </table>
+
                <div id="pa2">
                   <ul>
-                     <li><button style="padding: 0; border: 0;"></button>
-                        <a href="introduce3.do?${ pagination.queryString }"><img
-                           src="${pageContext.request.contextPath}/resources/images/cancel.jpg"
+                     <li><a href="introduce3_content.do?r_id=${rule.r_id }"><img
+                           src="${pageContext.request.contextPath}/resources/images/cancle.jpg"
                            style="border-radius: 3px"></a></li>
-                     <li>
-                           <input type="image"
+                     <li><button type="submit" id="save" name="cmd" value="save"
+                           style="padding: 0; border: 0;">
+                           <img
                               src="${pageContext.request.contextPath}/resources/images/save.jpg"
-                              style="border-radius: 3px"></li>
+                              style="border-radius: 3px">
+                        </button></li>
                   </ul>
                </div>
-            </form>
+            </div>
          </div>
+         </section>
+
+
+      </div>
+
+      </div>
+
       </section>
 
+      </div>
 
-   </div>
-
-   <!-- Scripts -->
-   <script
-      src="${pageContext.request.contextPath}/resources/assets/js/jquery.min.js"></script>
-   <script
-      src="${pageContext.request.contextPath}/resources/assets/js/jquery.dropotron.min.js"></script>
-   <script
-      src="${pageContext.request.contextPath}/resources/assets/js/skel.min.js"></script>
-   <script
-      src="${pageContext.request.contextPath}/resources//assets/js/util.js"></script>
-   <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
-   <script
-      src="${pageContext.request.contextPath}/resources/assets/js/main.js"></script>
+      <!-- Scripts -->
+      <script
+         src="${pageContext.request.contextPath}/resources/assets/js/jquery.min.js"></script>
+      <script
+         src="${pageContext.request.contextPath}/resources/assets/js/jquery.dropotron.min.js"></script>
+      <script
+         src="${pageContext.request.contextPath}/resources/assets/js/skel.min.js"></script>
+      <script
+         src="${pageContext.request.contextPath}/resources//assets/js/util.js"></script>
+      <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+      <script
+         src="${pageContext.request.contextPath}/resources/assets/js/main.js"></script>
+   </form>
 </body>
 </html>

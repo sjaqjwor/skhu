@@ -2,6 +2,7 @@
    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="ko">
 <head>
@@ -54,20 +55,27 @@ input[type="text"], input[type="password"], input[type="email"],
          <c:forEach var="mem" items="${ mem }">
             <div id="image_box" class="col-md-3">
                <div class="image_set">
+               <sec:authorize access="hasRole('ROLE_USER') && !hasRole('ROLE_ADMIN')">
                   <c:choose>
-                     <c:when test="${mem.u_openPhoto eq true}">
+                     <c:when test="${mem.u_openPhoto eq true || (user.u_cNumber eq mem.u_cNumber)&&(user.u_status eq \"회장\"||user.u_status eq \"부회장\")}">
                         <img class="img-circle img-responsive img-center"
-                           style="width: 200px; height: 200px;"
+                           style="width: 350px; height: 350px;"
                            src="${pageContext.request.contextPath}/resources/userImages/${mem.u_photo}"
                            onError='this.src="${pageContext.request.contextPath}/resources/userImages/no_pic.gif"'>
                      </c:when>
                      <c:otherwise>
                         <img class="img-circle img-responsive img-center"
-                           style="width: 200px; height: 200px;"
+                           style="width: 350; height: 350px;"
                            src="${pageContext.request.contextPath}/resources/userImages/no_pic.gif">
                      </c:otherwise>
                   </c:choose>
-                  
+               </sec:authorize>
+               <sec:authorize access="hasRole('ROLE_ADMIN')">
+                     <img class="img-circle img-responsive img-center"
+                           style="width: 350px; height: 350px;"
+                           src="${pageContext.request.contextPath}/resources/userImages/${mem.u_photo}"
+                           onError='this.src="${pageContext.request.contextPath}/resources/userImages/no_pic.gif"'>
+               </sec:authorize>
                </div>
             </div>
             <div class="col-md-9 personal-info">
@@ -90,9 +98,66 @@ input[type="text"], input[type="password"], input[type="email"],
                         <div class="controls">
                            <input type="text" value="${mem.u_cNumber}기 ${mem.u_status}"
                               class="input-xlarge" style="height: 25px;" readonly />
+                           <c:if test="${user.u_cNumber eq mem.u_cNumber&&(user.u_status eq \"회장\"||user.u_status eq \"부회장\")}">
+                                 <form method="get" style="display: inline;">
+                                    <input type="hidden" name="uid" value="${mem.u_id}"/>
+                                    <input type="hidden" name="ustatus" value="${mem.u_status}"/>
+                                    <input type="hidden" name="u_id" value="${user.u_id}"/>
+                                    <input type="hidden" name="u_status" value="${user.u_status}"/>
+                                  <button id="mngsel" class="btn" style="margin-bottom:5px;margin-top:-2px;">위임</button>
+                               </form>
+                           </c:if>
+                              
+                           
+                        </div>
+                     </div>
+                     
+            <!--  //////*******/////관리자로 로그인했을때/////***********///////// -->
+            
+            <sec:authorize access="hasRole('ROLE_ADMIN')"> 
+                     <div class="control-group">
+                        <label class="control-label" for="name">생년월일</label>
+                        <div class="controls">
+                           <input type="text" value="${mem.u_birth}" class="input-xlarge" style="height: 25px;" readonly />
                         </div>
                      </div>
 
+                     <div class="control-group">
+                        <label class="control-label" for="name">휴대폰번호</label>
+                        <div class="controls">
+                           <input type="text" value="${mem.u_phone}" class="input-xlarge" style="height: 25px;" readonly />
+                        </div>
+                     </div>
+
+                     <div class="control-group">
+                        <label class="control-label" for="name">이메일</label>
+                        <div class="controls">
+                           <input type="text" value="${mem.u_email}" class="input-xlarge" style="height: 25px;" readonly />
+                        </div>
+                     </div>
+
+                     <div class="control-group">
+                        <label class="control-label" for="name">주소</label>
+                        <div class="controls">
+                           <input type="text" value="${mem.u_address}" class="input-xlarge" style="height: 25px;" readonly />
+                        </div>
+                     </div>
+
+                     <div class="control-group">
+                        <label class="control-label" for="name">직장전화</label>
+                        <div class="controls">
+                           <input type="text" value="${mem.u_jobPhone}" class="input-xlarge" style="height: 25px;" readonly />
+                        </div>
+                     </div>
+
+                     <div class="control-group">
+                        <label class="control-label" for="name">직장지위</label>
+                        <div class="controls">
+                           <input type="text" value="${mem.u_jobStatus}" class="input-xlarge" style="height: 25px;" readonly />
+                        </div>
+                     </div>
+                     </sec:authorize>
+                     <sec:authorize access="hasRole('ROLE_USER') && !hasRole('ROLE_ADMIN')">
                      <div class="control-group">
                         <label class="control-label" for="name">생년월일</label>
                         <div class="controls">
@@ -176,6 +241,7 @@ input[type="text"], input[type="password"], input[type="email"],
                            </c:choose>
                         </div>
                      </div>
+                     </sec:authorize>
          </c:forEach>
          <div class="control-group">
             <div class="controls">
@@ -184,7 +250,8 @@ input[type="text"], input[type="password"], input[type="email"],
                   style="margin-left: 12px; margin-right: 20px; margin-top: -15px">
                   <input type="hidden" name="searchsel" value="${searchsel}" /> <input
                      type="hidden" name="searchtxt" value="${searchtxt}" /><br/>
-                  <button type="submit" class="btn">목록으로 나가기</button>
+                  <button type="button" style="display:none;"></button>
+                  <button type="button" class="btn"><a href="cardinalList.do?selgisu=0">목록으로 나가기</a></button>
                </form>
             </div>
 
@@ -218,6 +285,18 @@ input[type="text"], input[type="password"], input[type="email"],
    </div>
 
    <!-- Scripts -->
+   <script>
+   document
+   .getElementById("mngsel")
+   .addEventListener("click", function( e ){
+       if( ! confirm("직책을 위임합니다.") ){
+          e.preventDefault();
+       } else {
+          //alert("로그아웃됩니다.");
+          document.form.submit();
+       }
+   });
+   </script>
    <script
       src="${pageContext.request.contextPath}/resources/assets/js/jquery.min.js"></script>
    <script

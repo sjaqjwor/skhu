@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="ko">
@@ -145,11 +146,12 @@
                   <h2 class="emptyuser">회원이 없습니다</h2>
                </c:if>
 
-
+            
                <c:forEach var="i" items="${ list }">
                   <div class="col-lg-4 col-sm-6 text-center">
+                  <sec:authorize access="hasRole('ROLE_USER') && !hasRole('ROLE_ADMIN')">
                      <c:choose>
-                        <c:when test="${i.u_openPhoto eq true}">
+                        <c:when test="${i.u_openPhoto eq true || (user.u_cNumber eq i.u_cNumber)&&(user.u_status eq \"회장\"||user.u_status eq \"부회장\")}">
                            <img class="img-circle img-responsive img-center"
                               style="width: 200px; height: 200px;"
                               src="${pageContext.request.contextPath}/resources/userImages/${i.u_photo}"
@@ -161,6 +163,15 @@
                               src="${pageContext.request.contextPath}/resources/userImages/no_pic.gif">
                         </c:otherwise>
                      </c:choose>
+                  </sec:authorize>
+                     <sec:authorize access="hasRole('ROLE_ADMIN')">
+                  <img class="img-circle img-responsive img-center"
+                              style="width: 200px; height: 200px;"
+                              src="${pageContext.request.contextPath}/resources/userImages/${i.u_photo}"
+                              onError='this.src="${pageContext.request.contextPath}/resources/userImages/no_pic.gif"'>
+                 </sec:authorize>
+                 
+                     
 
 
                      <h3>${i.u_name}

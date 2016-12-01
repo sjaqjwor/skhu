@@ -53,7 +53,7 @@ public class CommunityController {
       Page page = new Page("community");
       model.addAttribute("user", user);
       model.addAttribute("page", page);
-	  model.addAttribute("rc",userService.getCount());
+     model.addAttribute("rc",userService.getCount());
       pagination.setRecordCount(communityMapper.selectCount(pagination));
       model.addAttribute("plist", communityMapper.selectAll(pagination));
 
@@ -107,23 +107,32 @@ public class CommunityController {
       String [] arr = new String[check.length];
       
       model.addAttribute("pic","hello");
-      
+      int nid = 0;
       if(check.length==1){
          check[0]=check[0].substring(1,check[0].length()-1);
+         nid=communityMapper.search_file(check[0]);
       }
       else{
       for(int a=0;a<check.length;a++){
          
          if((check[a].charAt(0))=='['){
             check[a]=check[a].substring(1,check[a].length());
+            nid=communityMapper.search_file(check[a]);
          }
          else if((check[a].charAt(check[a].length()-1))==']'){
             check[a]=check[a].substring(0,check[a].length()-1);
          }
       }
       }
+     
       for(int a=0;a<check.length;a++){
          communityMapper.file_delete(check[a]);
+      }
+      int n = communityMapper.count_n(nid);
+      System.out.println(nid);
+      System.out.println(n);
+      if(n==0){
+         communityMapper.notice_file(nid);
       }
       
       return new JsonResult(true, true, true);
@@ -142,7 +151,15 @@ public class CommunityController {
          return "community/notice_write"; 
       }
       else{
-      communityMapper.notice_insert(user.getU_id(), user.getU_name(), title, body);
+         for (MultipartFile uploadFile : uploadFiles) {
+                if (uploadFile.getSize() > 0) {
+                      communityMapper.notice_insert(user.getU_id(), user.getU_name(), title, body,true);
+                      break;
+                }
+                else{
+                   communityMapper.notice_insert(user.getU_id(), user.getU_name(), title, body,false);
+                }
+         }
       for (MultipartFile uploadFile : uploadFiles) {
          File file = new File();
          if (uploadFile.getSize() > 0) {
@@ -189,6 +206,7 @@ public class CommunityController {
             String a3 = a2.substring(a2.indexOf(".")+1, a2.length());
             file.setF_extension(a3);
             communityMapper.insert_file(file);
+            communityMapper.n_ch(id);
 
          }
       }
@@ -289,22 +307,32 @@ public class CommunityController {
       
       model.addAttribute("pic","hello");
       
+      int bid = 0;
       if(check.length==1){
          check[0]=check[0].substring(1,check[0].length()-1);
+         bid=communityMapper.search_bfile(check[0]);
       }
       else{
       for(int a=0;a<check.length;a++){
          
          if((check[a].charAt(0))=='['){
             check[a]=check[a].substring(1,check[a].length());
+            bid=communityMapper.search_bfile(check[a]);
          }
          else if((check[a].charAt(check[a].length()-1))==']'){
             check[a]=check[a].substring(0,check[a].length()-1);
          }
       }
       }
+     
       for(int a=0;a<check.length;a++){
-         communityMapper.board_file_delete(check[a]);
+         communityMapper.file_delete(check[a]);
+      }
+      int n = communityMapper.count_b(bid);
+      System.out.println(bid);
+      System.out.println(n);
+      if(n==0){
+         communityMapper.board_file(bid);
       }
       
       return new JsonResult(true, true, true);
@@ -322,7 +350,17 @@ public class CommunityController {
       if(title.equals("")){
          return "community/board_write"; 
       }else{
-      communityMapper.board_insert(user.getU_id(), user.getU_name(), title, body);
+         for (MultipartFile uploadFile : uploadFiles) {
+             if (uploadFile.getSize() > 0) {
+                System.out.println("ㅋㄷㅋㄷ");
+                   communityMapper.board_insert(user.getU_id(), user.getU_name(), title, body,true);
+                   break;
+             }
+             else{
+                communityMapper.board_insert(user.getU_id(), user.getU_name(), title, body,false);
+             }
+      }
+     
       for (MultipartFile uploadFile : uploadFiles) {
          File file = new File();
          if (uploadFile.getSize() > 0) {
@@ -365,6 +403,7 @@ public class CommunityController {
             String a3 = a2.substring(a2.indexOf(".")+1, a2.length());
             file.setF_extension(a3);
             communityMapper.board_insert_file(file);
+            communityMapper.b_ch(id);
 
          }
       }

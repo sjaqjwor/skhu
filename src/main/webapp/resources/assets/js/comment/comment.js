@@ -32,6 +32,7 @@ $(function() {
 $(function() {
  $("#file_delete").click( function() {
     var array = new Array();
+    if(confirm("삭제하시겠습니까?")==true){
     $("#file:checked").each(function(i){
       array.push(Number($(this).val())); 
     });
@@ -58,14 +59,14 @@ $(function() {
                 
             }
         });
-     
+    }
 });
 })
 $(function() {
    
  $("#board_file_delete").click( function() {
     var array = new Array();
-    alert("asdasd");
+    if(confirm("삭제하시겠습니까?")==true){
     $("#file:checked").each(function(i){
       array.push(Number($(this).val())); 
     });
@@ -92,6 +93,10 @@ $(function() {
                 
             }
         });
+    }else
+       {
+          return;
+       }
      
 });
 })

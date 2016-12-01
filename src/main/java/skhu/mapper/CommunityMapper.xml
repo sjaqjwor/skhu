@@ -61,9 +61,19 @@
       </select>
    <insert id="notice_insert">
       insert into
-      [notice](n_writerId,n_writerName,n_title,n_content,n_writeTime)
-      values(#{n_writerId},#{n_writerName},#{n_title},#{n_content},GETDATE())
+      [notice](n_writerId,n_writerName,n_title,n_content,n_writeTime,n_file)
+      values(#{n_writerId},#{n_writerName},#{n_title},#{n_content},GETDATE(),#{n_file})
    </insert>
+   <update id="notice_file">
+      update [notice]
+      set n_file=0
+      where n_id=#{n_id};
+   </update>
+   <update id="board_file">
+      update [board]
+      set b_file=0
+      where b_id=#{b_id};
+   </update>
    <insert id="comment_insert">
       insert into
       [Comment](b_id,n_id,c_writerId,c_writeTime,c_writerName,c_content)
@@ -135,10 +145,11 @@
          (#{srchType} = 1 AND b_title like '%'+#{srchText}+'%') OR
          (#{srchType} = 2 AND  b_writerName like '%'+#{srchText}+'%' )
       </select>
+     
    <insert id="board_insert">
       insert into
-      [board](b_writerId,b_writerName,b_title,b_content,b_writeTime)
-      values(#{b_writerId},#{b_writerName},#{b_title},#{b_content},GETDATE())
+      [board](b_writerId,b_writerName,b_title,b_content,b_writeTime,b_file)
+      values(#{b_writerId},#{b_writerName},#{b_title},#{b_content},GETDATE(),#{b_file})
    </insert>
    
    <insert id="board_insert_file">
@@ -153,6 +164,38 @@
    delete from [file]
    where f_id=#{f_id}
    </delete>
+   <select id="search_file" resultType="int">
+      select n_id
+      from [file]
+      where f_id = #{f_id}
+   </select>
+   <select id="count_n" resultType="int">
+      select count(*)
+      from [file]
+      where n_id = #{n_id}
+   </select>
+   <select id="search_bfile" resultType="int">
+      select b_id
+      from [file]
+      where f_id = #{f_id}
+   </select>
+   <select id="count_b" resultType="int">
+      select count(*)
+      from [file]
+      where b_id = #{b_id}
+   </select>
+   <update id="n_ch">
+      update [notice]
+      set n_file=1
+      where n_id=#{id}
+   </update>
+   <update id="b_ch">
+      update [board]
+      set b_file=1
+      where b_id=#{id}
+   </update>
+   
+   
 
    
 </mapper>

@@ -1,4 +1,4 @@
-package skhu.mapper;
+ package skhu.mapper;
 
 import java.util.List;
 
@@ -25,8 +25,11 @@ public interface CommunityMapper{
          @Param("n_title")String title,@Param("n_content")String content);
    void notice_insert
    (@Param("n_writerId")String id,@Param("n_writerName")String name,
-         @Param("n_title")String title,@Param("n_content")String content);
-   
+         @Param("n_title")String title,@Param("n_content")String content,@Param("n_file")boolean file);
+   int search_file(String id);
+   int count_n(int id);
+   void notice_file(int id);
+   void n_ch(String id);
    List<Board> board_selectAll(Pagination pagination);
    int board_selectCount(Pagination pagination);
    Board board_selectById(String id);
@@ -39,5 +42,9 @@ public interface CommunityMapper{
          @Param("b_title")String title,@Param("b_content")String content);
    void board_insert
    (@Param("b_writerId")String id,@Param("b_writerName")String name,
-         @Param("b_title")String title,@Param("b_content")String content);
+         @Param("b_title")String title,@Param("b_content")String content,@Param("b_file")boolean file);
+   int search_bfile(String id);
+   int count_b(int id);
+   void board_file(int id);
+   void b_ch(String id);
 }

@@ -42,7 +42,7 @@ public class TaskService {
 	        user2 = userMapper.selectByStatus(c, s);
 	        if(user2!=null)
 	        	if(!(user.getU_id().equals(user2.getU_id())))
-	        		return c+"의 "+s+"이 이미 존재합니다.";
+	        		return c+"기의 "+s+"이 이미 존재합니다.";
         }
         s = user.getU_phone();
         if (StringUtils.isBlank(s))
