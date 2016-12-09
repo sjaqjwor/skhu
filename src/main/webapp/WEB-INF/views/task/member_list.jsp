@@ -90,7 +90,8 @@
 	                		<td><image style="width:50px;height:50px;" src="${pageContext.request.contextPath}/resources/userImages/no_pic.gif"></td>
 	                	</c:if>
 	                	<c:if test="${not empty user.u_photo }">
-	                		<td><image style="width:50px;height:50px;" src="${pageContext.request.contextPath}/resources/userImages/${user.u_photo}"></td>
+	                		<td><image style="width:50px;height:50px;" src="${pageContext.request.contextPath}/resources/userImages/${user.u_photo}"
+	                		onError='this.src="${pageContext.request.contextPath}/resources/userImages/no_pic.gif"'></td>
 	                	</c:if>
 	                    <td>${ user.u_loginId }</td>
 	                    <td>${ user.u_name }</td>

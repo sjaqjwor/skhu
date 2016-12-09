@@ -1,5 +1,8 @@
 package skhu.util;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,14 +11,20 @@ import java.util.Map;
  
  
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.PictureData;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFDrawing;
+import org.apache.poi.xssf.usermodel.XSSFPicture;
+import org.apache.poi.xssf.usermodel.XSSFPictureData;
+import org.apache.poi.xssf.usermodel.XSSFShape;
  
  
  
 public class ExcelRead {
-     public static List<Map<String, String>> read(ExcelReadOption excelReadOption) {
+     public static List<Map<String, String>> read(ExcelReadOption excelReadOption,String path) throws FileNotFoundException, IOException {
             //엑셀 파일 자체
             //엑셀파일을 읽어 들인다.
             //FileType.getWorkbook() <-- 파일의 확장자에 따라서 적절하게 가져온다.
@@ -64,7 +73,8 @@ public class ExcelRead {
                     /*
                      * 가져온 Row의 Cell의 개수를 구한다.
                      */
-                    numOfCells = row.getPhysicalNumberOfCells();
+                    //numOfCells = row.getPhysicalNumberOfCells();
+                    numOfCells = 12; //못 읽어 들임.. 추가한 Cell 12로 고정.
                     /*
                      * 데이터를 담을 맵 객체 초기화
                      */
@@ -103,8 +113,34 @@ public class ExcelRead {
                 }
                 
             }
-            
+            readDrawing(result,sheet,path); //사진 등록
+            System.out.println(result.get(0).toString());
+            System.out.println(result.get(4).toString());
             return result;
             
         }
+    public static void readDrawing(List<Map<String, String>> result,Sheet sheet,String path) throws FileNotFoundException, IOException{
+    	XSSFDrawing drawing = (XSSFDrawing) sheet.createDrawingPatriarch(); // I know it is ugly, actually you get the actual instance here
+        //List list = new List();
+    	for (XSSFShape shape : drawing.getShapes()) {
+            if (shape instanceof XSSFPicture) {
+                XSSFPicture picture = (XSSFPicture) shape;
+                XSSFPictureData xssfPictureData = picture.getPictureData();
+                ClientAnchor anchor = picture.getPreferredSize();
+                //int row1 = anchor.getRow1();
+                int row2 = anchor.getRow2();
+                //System.out.println("Row1: " + row1 + " Row2: " + row2);
+                // Saving the file
+                String ext = xssfPictureData.suggestFileExtension();                
+                byte[] data = xssfPictureData.getData();
+                
+                try (FileOutputStream os = new FileOutputStream(path+result.get(row2-5).get("H")+"."+ext)) {
+                    os.write(data);
+                    os.flush();
+                }
+                result.get(row2-5).replace("D",result.get(row2-5).get("H")+"."+ext);
+            }
+       }
+       //return list;
+    }
 }

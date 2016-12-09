@@ -21,6 +21,28 @@ input[type="text"], input[type="password"], input[type="email"], textarea {
 	width:75%;
 }
 </style>
+<script type="text/javascript">
+ function getFile(){
+   document.getElementById("upfile").click();
+ }
+ function sub(obj){
+    var file = obj.value;
+    var fileName = file.split("\\");
+    document.getElementById("yourBtn").innerHTML = fileName[fileName.length-1];
+    document.getElementById("u_photo").value = fileName[fileName.length-1];
+    if (obj.files && obj.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#blah1').attr('src', e.target.result);
+            $('#blah2').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL(obj.files[0]);
+    }
+    event.preventDefault();
+  }
+</script>
 </head>
 <body>
 		<div id="page-wrapper">
@@ -39,17 +61,21 @@ input[type="text"], input[type="password"], input[type="email"], textarea {
 			</div>
 	    <hr style="	height: 5px; background-color: #b7822b;">
 	   <!-- Form -->
-	   <form:form method="post" class="form-horizontal" modelAttribute="user">
+	   <form:form id="jstl" method="post" class="form-horizontal" modelAttribute="user" enctype="multipart/form-data">
 		  <div id="image_box" class="col-md-3">	  
 			   <div class="image_set">
 				<c:if test="${empty user.u_photo }">
-			      <image class="center-block img-circle img-thumbnail img-responsive" style="display:block; width:350px;height:350px; margin-top:10px;" src="${pageContext.request.contextPath}/resources/userImages/no_pic.gif">
+			      <image id="blah1" class="center-block img-circle img-thumbnail img-responsive" style="display:block; width:350px;height:350px; margin-top:10px;" src="${pageContext.request.contextPath}/resources/userImages/no_pic.gif">
 			    </c:if>
 			    <c:if test="${not empty user.u_photo }">
-			      <image class="center-block img-circle img-thumbnail img-responsive" style="display:block; width:350px;height:350px; margin-top:10px;" src="${pageContext.request.contextPath}/resources/userImages/${user.u_photo}">
+			      <image id="blah2" class="center-block img-circle img-thumbnail img-responsive" style="display:block; width:350px;height:350px; margin-top:10px;" src="${pageContext.request.contextPath}/resources/userImages/${user.u_photo}"
+			      onError='this.src="${pageContext.request.contextPath}/resources/userImages/no_pic.gif"'>
 			    </c:if>
-			    <form:hidden path="u_photo"/> 
-		        <button id="imageButton" type="button" class="btn btn-success">사진 업로드</button>
+			    <label style="float:left; margin-left:80px; margin-top:30px;">공개여부</label>
+				<form:checkbox path="u_openPhoto" style="margin-left:5px; margin-top:34px;"/>
+			    <form:hidden id="u_photo" path="u_photo"/>
+			    <div id="yourBtn" onclick="getFile()" class="btn btn-success" style="margin-left:45px; width:150px;">사진 업로드</div>
+				<div style='height: 0px;width: 0px; overflow:hidden;'><input id="upfile" type="file" name="image" value="upload" onchange="sub(this)"/></div>
 		      </div>
 		  </div>
 		 <div class="col-md-9 personal-info">
@@ -133,20 +159,29 @@ input[type="text"], input[type="password"], input[type="email"], textarea {
 	    </div>
 	 
 	 	<div class="control-group">
-	      <label class="control-label" for="name">직장전화</label>
+	      <label class="control-label" for="name">소속직장</label>
 	      <div class="controls">
-	        <form:input path="u_jobPhone" class="input-xlarge" style="height:25px; float:left;"/>
+	        <form:input path="u_jobName" class="input-xlarge" style="height:25px; float:left;"/>
 	        <label style="float:left; margin-left:5px; margin-top:2px;">공개여부</label>
-			<form:checkbox path="u_openJobPhone" style="margin-left:5px; margin-top:6px;"/>
+			<form:checkbox path="u_openJobName" style="margin-left:5px; margin-top:6px;"/>
 	      </div>
 	    </div>
-	 	
+	 
 	 	<div class="control-group">
 	      <label class="control-label" for="name">직장지위</label>
 	      <div class="controls">
 	        <form:input path="u_jobStatus" class="input-xlarge" style="height:25px; float:left;"/>
 	        <label style="float:left; margin-left:5px; margin-top:2px;">공개여부</label>
 			<form:checkbox path="u_openJobStatus" style="margin-left:5px; margin-top:6px;"/>
+	      </div>
+	    </div>
+	 
+	 	<div class="control-group">
+	      <label class="control-label" for="name">직장전화</label>
+	      <div class="controls">
+	        <form:input path="u_jobPhone" class="input-xlarge" style="height:25px; float:left;"/>
+	        <label style="float:left; margin-left:5px; margin-top:2px;">공개여부</label>
+			<form:checkbox path="u_openJobPhone" style="margin-left:5px; margin-top:6px;"/>
 	      </div>
 	    </div>
 	 	

@@ -4,6 +4,7 @@ import skhu.service.*;
 import skhu.model.*;
 import skhu.mapper.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -35,7 +36,8 @@ public class IntroduceController {
    RuleMapper ruleMapper;
    @Autowired
    FileMapper fileMapper;
-
+   
+   
    @RequestMapping("/introduce1.do")
    public String introduce1(Model model) {
       User user = userService.getCurrentUser();
@@ -51,12 +53,63 @@ public class IntroduceController {
    public String introduce2(Model model) {
       User user = userService.getCurrentUser();
       Page page = new Page("introduce");
-
+      Greeting greeting1 = introduceMapper.g_select(1);
+      Greeting greeting2 = introduceMapper.g_select(2);
       model.addAttribute("user", user);
       model.addAttribute("page", page);
+      model.addAttribute("greeting1",greeting1);
+      model.addAttribute("greeting2",greeting2);
+      model.addAttribute("greeting",greeting1);
+      model.addAttribute("active1","active");
       return "introduce/introduce2";
    }
-
+   @RequestMapping("/introduce2_2.do")
+   public String introduce2_2(Model model) {
+      User user = userService.getCurrentUser();
+      Page page = new Page("introduce");
+      Greeting greeting1 = introduceMapper.g_select(1);
+      Greeting greeting2 = introduceMapper.g_select(2);
+      model.addAttribute("user", user);
+      model.addAttribute("page", page);
+      model.addAttribute("greeting1",greeting1);
+      model.addAttribute("greeting2",greeting2);
+      model.addAttribute("greeting",greeting2);
+      model.addAttribute("active2","active");
+      return "introduce/introduce2";
+   }
+   @RequestMapping(value = "/introduce2_edit.do", method = RequestMethod.GET)
+   public String introduce2_edit(Model model, @RequestParam("g_id") int g_id) {
+      User user = userService.getCurrentUser();
+      Page page = new Page("introduce");
+      model.addAttribute("user", user);
+      model.addAttribute("page", page);
+      
+      model.addAttribute("greeting",introduceMapper.g_select(g_id));
+      return "introduce/introduce2_edit";
+   }
+   
+   @RequestMapping(value = "/introduce2_edit.do", method = RequestMethod.POST)
+   public String introduce2_edit(@RequestParam(value="image",required=false) MultipartFile image, Model model,Greeting greeting, HttpServletRequest request) {
+      User user = userService.getCurrentUser();
+      Page page = new Page("introduce");
+      
+      if(!image.getOriginalFilename().equals("")){
+	        java.io.File destFile = new java.io.File(request.getSession().getServletContext().getRealPath("resources/userImages")+"\\"+image.getOriginalFilename());
+		    try{
+		        image.transferTo(destFile);
+		    }catch(IllegalStateException | IOException e){
+		        throw new RuntimeException(e.getMessage(),e);
+		    }
+      }
+      
+      model.addAttribute("user", user);
+      model.addAttribute("page", page);
+      introduceMapper.g_update(greeting);
+      
+      return "redirect:/introduce/introduce2.do";
+   }
+   
+   
    @RequestMapping("/introduce3.do")
    public String introduce3(Model model, Pagination pagination) {
       User user = userService.getCurrentUser();
@@ -141,6 +194,7 @@ public class IntroduceController {
 
    @RequestMapping(value = "/introduce1_edit.do", method = RequestMethod.GET)
    public String introduce1_edit(Model model) {
+      model.addAttribute("introduce1",introduceMapper.select());
       return "introduce/introduce1_edit";
    }
 
@@ -148,6 +202,7 @@ public class IntroduceController {
    public String create(@RequestParam("i_text") String i_text, Model model) {
       introduceMapper.update(i_text);
       // introduceMapper.update(introduce);
+      
       return "redirect:introduce1.do";
    }
    @RequestMapping(value = "rule_download.do")

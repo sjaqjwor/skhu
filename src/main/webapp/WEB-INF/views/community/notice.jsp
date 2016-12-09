@@ -128,7 +128,8 @@
                            style="cursor: pointer;">
                            <td>${list.n_id}</td>
                            <td colspan="2" style="text-align:left;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"
-                           >${list.n_title}<img class="${list.n_file }" src="${pageContext.request.contextPath}/resources/assets/css/images/clip.png"></td>
+                           >${list.n_title}<img class="${list.n_file }" src="${pageContext.request.contextPath}/resources/assets/css/images/clip.png">
+                           <c:if test="${list.n_count > 0}"><span style="color:red;">[${list.n_count}]</span></c:if></td>
                            <td>${list.n_writerName}</td>
                            <td colspan="2"><fmt:formatDate pattern="yyyy-MM-dd"
                                  value="${ list.n_writeTime 

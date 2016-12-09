@@ -4,14 +4,14 @@
    <select id="selectAll" resultType="skhu.model.Notice">
       <![CDATA[
       SELECT * FROM ( 
-         SELECT *, ROW_NUMBER() OVER (ORDER BY n_id desc) 행번호 
+         SELECT *, ROW_NUMBER() OVER (ORDER BY n_id desc) 행번호
          FROM [Notice]
          where
          #{srchType} = 0 or
          (#{srchType} = 1 AND n_title like '%'+#{srchText}+'%') OR
          (#{srchType} = 2 AND  n_writerName like '%'+#{srchText}+'%')
          ) subquery 
-         WHERE 행번호 > (#{currentPage} - 1) * #{pageSize} AND 행번호 <= #{currentPage} * #{pageSize} 
+         WHERE 행번호> (#{currentPage} - 1) * #{pageSize} AND 행번호<= #{currentPage} * #{pageSize} 
          ORDER BY 행번호
       ]]>
    </select>
@@ -45,8 +45,7 @@
       where f_id=#{f_id};
    </update>
    <select id="max" resultType="int">
-      select max(n_id)
-      from [Notice]
+    SELECT IDENT_CURRENT('Notice')
    </select>
    <delete id="delete_comment">
       delete from [comment]
@@ -61,8 +60,8 @@
       </select>
    <insert id="notice_insert">
       insert into
-      [notice](n_writerId,n_writerName,n_title,n_content,n_writeTime,n_file)
-      values(#{n_writerId},#{n_writerName},#{n_title},#{n_content},GETDATE(),#{n_file})
+      [notice](n_writerId,n_writerName,n_title,n_content,n_writeTime,n_file,n_count)
+      values(#{n_writerId},#{n_writerName},#{n_title},#{n_content},GETDATE(),#{n_file},0)
    </insert>
    <update id="notice_file">
       update [notice]
@@ -77,13 +76,24 @@
    <insert id="comment_insert">
       insert into
       [Comment](b_id,n_id,c_writerId,c_writeTime,c_writerName,c_content)
-      values(null,#{n_id},#{c_writerId},GETDATE(),#{c_writerName},#{c_content})
+      values(null,#{n_id},#{c_writerId},#{c_writeTime},#{c_writerName},#{c_content})
+   </insert>
+   <insert id="b_comment_insert">
+      insert into
+      [Comment](b_id,n_id,c_writerId,c_writeTime,c_writerName,c_content)
+      values(#{b_id},null,#{c_writerId},#{c_writeTime},#{c_writerName},#{c_content})
    </insert>
    <select id="notice_comment" resultType="skhu.model.Comment">
-      select *,u.u_cNumber
-      from [Comment] c join [user] u on c.c_writerId=u.u_id
-      where n_id =#{n_id};
+      select c.*,u.u_photo,u.u_cNumber,a.a_photo
+      from [Comment] c left join [user] u on c.c_writerId=u.u_id left join [ADMIN] a on c_writerId=a.a_id
+      where c.n_id=#{id}
    </select>
+   <select id="board_comment" resultType="skhu.model.Comment">
+      select c.*,u.u_photo,u.u_cNumber,a.a_photo
+      from [Comment] c left join [user] u on c.c_writerId=u.u_id left join [ADMIN] a on c_writerId=a.a_id
+      where c.b_id=#{id}
+   </select>
+   
    <insert id="insert_file">
       insert into [file](b_id,f_name,f_size,n_id,f_data,f_extension)
       values(null,#{f_name},#{f_size},#{n_id},#{f_data},#{f_extension})
@@ -99,14 +109,14 @@
    <select id="board_selectAll" resultType="skhu.model.Board">
       <![CDATA[
       SELECT * FROM ( 
-         SELECT *, ROW_NUMBER() OVER (ORDER BY b_id desc) 행번호 
+         SELECT *, ROW_NUMBER() OVER (ORDER BY b_id desc) 행번호
          FROM [board]
          where
          #{srchType} = 0 or
          (#{srchType} = 1 AND b_title like '%'+#{srchText}+'%') OR
          (#{srchType} = 2 AND  b_writerName like '%'+#{srchText}+'%')
          ) subquery 
-         WHERE 행번호 > (#{currentPage} - 1) * #{pageSize} AND 행번호 <= #{currentPage} * #{pageSize} 
+         WHERE 행번호> (#{currentPage} - 1) * #{pageSize} AND 행번호<= #{currentPage} * #{pageSize} 
          ORDER BY 행번호
       ]]>
    </select>
@@ -135,8 +145,7 @@
       where f_id=#{f_id};
    </update>
    <select id="board_max" resultType="int">
-      select max(b_id)
-      from [board]
+     SELECT IDENT_CURRENT('board')
    </select>
    <select id="board_selectCount" resultType="int">
       SELECT COUNT(*)
@@ -148,8 +157,13 @@
      
    <insert id="board_insert">
       insert into
-      [board](b_writerId,b_writerName,b_title,b_content,b_writeTime,b_file)
-      values(#{b_writerId},#{b_writerName},#{b_title},#{b_content},GETDATE(),#{b_file})
+      [board](b_writerId,b_writerName,b_title,b_content,b_writeTime,b_file,b_count,b_aid)
+      values(#{b_writerId},#{b_writerName},#{b_title},#{b_content},GETDATE(),#{b_file},0,null)
+   </insert>
+   <insert id="board_insert_ad">
+      insert into
+      [board](b_writerId,b_writerName,b_title,b_content,b_writeTime,b_file,b_count,b_aid)
+      values(null,#{b_writerName},#{b_title},#{b_content},GETDATE(),#{b_file},0,#{b_aid})
    </insert>
    
    <insert id="board_insert_file">
@@ -194,8 +208,44 @@
       set b_file=1
       where b_id=#{id}
    </update>
-   
-   
+   <select id="max_nid" resultType="int">
+    SELECT IDENT_CURRENT('COMMENT')
+   </select>
+    <update id="n_c">
+      update [comment]
+      set c_content=#{content}
+      where c_id=#{id}
+   </update>
+   <select id="coment_list" resultType="skhu.model.Comment">
+      select *
+      from [comment]
+      where n_id=#{id}
+   </select>
+   <update id="count">
+    update [notice]
+    set n_count=n_count+1
+    where n_id=#{n_id}
+   </update>
+   <update id="count_d">
+    update NOTICE
+   set n_count=n_count-1
+   where n_id=#{n_id}
+   </update>
+    <update id="count_bb">
+    update [board]
+    set b_count=b_count+1
+    where b_id=#{b_id}
+   </update>
+   <update id="count_bd">
+    update board
+   set b_count=b_count-1
+   where b_id=#{b_id}
+   </update>
+   <select id="b_coment_list" resultType="skhu.model.Comment">
+      select *
+      from [comment]
+      where b_id=#{id}
+   </select>
 
    
 </mapper>

@@ -5,7 +5,10 @@ import skhu.model.*;
 import skhu.mapper.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -75,10 +78,18 @@ public class TaskController {
     }
 	
 	@RequestMapping(value="/user_edit.do", method = RequestMethod.POST)
-    public String edit(User user, Model model,PaginationM paginationM) {
+    public String edit(@RequestParam(value="image",required=false) MultipartFile image,User user, Model model,PaginationM paginationM,HttpServletRequest request) {
 		Page page = new Page("task");
 		
         String message = taskService.validateBeforeUpdate(user);
+        if(!image.getOriginalFilename().equals("")){
+	        java.io.File destFile = new java.io.File(request.getSession().getServletContext().getRealPath("resources/userImages")+"\\"+image.getOriginalFilename());
+		    try{
+		        image.transferTo(destFile);
+		    }catch(IllegalStateException | IOException e){
+		        throw new RuntimeException(e.getMessage(),e);
+		    }
+        }
         if (message == null) {
             userMapper.userUpdateByAdmin(user);
             model.addAttribute("success", "저장했습니다.");
@@ -251,9 +262,8 @@ public class TaskController {
 	    if(excelFile==null || excelFile.isEmpty()){
 	        throw new RuntimeException("엑셀파일을 선택 해 주세요.");
 	    }
-	        
-	    java.io.File destFile = new java.io.File(request.getSession().getServletContext().getRealPath("/resources/excel/")+excelFile.getOriginalFilename());
-	    
+	    java.io.File destFile = new java.io.File(request.getSession().getServletContext().getRealPath("resources/userImages")+"\\"+excelFile.getOriginalFilename());
+	    String path = request.getSession().getServletContext().getRealPath("resources/userImages")+"\\";
 	    try{
 	        excelFile.transferTo(destFile);
 	    }catch(IllegalStateException | IOException e){
@@ -261,7 +271,7 @@ public class TaskController {
 	    }
 	        
 	    UserForm userForm = new UserForm();
-	    userForm.setUsers(taskService.excelUpload(destFile));
+	    userForm.setUsers(taskService.excelUpload(destFile,path));
         model.addAttribute("admin", admin);
         model.addAttribute("page",page);
 	    model.addAttribute("userForm",userForm);
@@ -272,22 +282,47 @@ public class TaskController {
 	
 	/*다중 form 회원 등록*/
 	@RequestMapping(value="/register.do",method = RequestMethod.POST)
-    public String register(Model model,@ModelAttribute("userForm") UserForm userForm) {
+    public String register(@RequestParam(value="values",required=false) List<String> values,
+    		Model model,@ModelAttribute("userForm") UserForm userForm) {
+		System.out.println("들어옴");
 		Admin admin = userService.getCurrentAdmin();
 		Page page = new Page("task");
 		
 		List<User> users = userForm.getUsers();
+		List<User> result = new ArrayList<User>();
 		
-		if(users!=null && users.size()>0){
-			for(User user:users){
-				user.setU_password("77777");
-				userMapper.registerUser(user);
+		int count=0;
+		if(users!=null && values!=null && values.size()>0){
+			for(int i=0;i<values.size();i++){
+				User user = users.get(Integer.parseInt(values.get(i))-1);
+				if(user.getU_birth()!=null){
+					String birth = user.getU_birth().toString();
+					String password = birth.substring(2,4)+birth.substring(5,7)+
+							birth.substring(8,10);
+					user.setU_password(password);
+				}
+	        	user.setU_status("일반회원");
+	        	result.add(user);
+	        	count+=taskService.validateRegister(user);
 			}
 		}
+		if(users!=null && values!=null && count==0){
+			for(User user:result){
+				userMapper.registerUser(user);
+			}
+	        model.addAttribute("success", result.size()+"명의 회원 정보가 정상적으로 등록되었습니다.");
+		}else if(values==null){
+			result.clear();
+		}else{
+			model.addAttribute("error",count+"개의 행의 회원 정보가 잘못되었습니다.");
+		}
+		
+		userForm.setUsers(result); //저장 리스트로 변경
 		
         model.addAttribute("admin", admin);
         model.addAttribute("page",page);
         model.addAttribute("rc",userService.getCount());
+
         return "task/member_register";
     }
 }

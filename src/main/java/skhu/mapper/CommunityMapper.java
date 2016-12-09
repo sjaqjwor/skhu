@@ -30,6 +30,16 @@ public interface CommunityMapper{
    int count_n(int id);
    void notice_file(int id);
    void n_ch(String id);
+   void comment_insert(Comment comment);
+   List<Comment> notice_comment(String id);
+   List<Comment> board_comment(String id);
+   int max_nid ();
+   void delete_comment(String id);
+   void n_c(@Param("id")int id,@Param("content")String content);
+   List<Comment> coment_list(String id);
+   void count(int id);
+   void count_d(String id);
+   
    List<Board> board_selectAll(Pagination pagination);
    int board_selectCount(Pagination pagination);
    Board board_selectById(String id);
@@ -47,4 +57,11 @@ public interface CommunityMapper{
    int count_b(int id);
    void board_file(int id);
    void b_ch(String id);
+   void b_comment_insert(Comment comment);
+   List<Comment> b_coment_list(String id);
+   void count_bb(int id);
+   void count_bd(String id);
+   void board_insert_ad
+   (@Param("b_aid")String id,@Param("b_writerName")String name,
+         @Param("b_title")String title,@Param("b_content")String content,@Param("b_file")boolean file);
 }

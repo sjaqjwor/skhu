@@ -4,9 +4,12 @@ import skhu.service.*;
 import skhu.model.*;
 import skhu.mapper.*;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -15,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/user")
@@ -40,10 +44,18 @@ public class UserController {
     }
 	
 	@RequestMapping(value="/edit.do", method = RequestMethod.POST)
-    public String edit(User user, Model model) {
+    public String edit(@RequestParam(value="image",required=false) MultipartFile image,User user, Model model, HttpServletRequest request) {
 		Page page = new Page("user");
 		
         String message = userService.validateBeforeUpdate(user);
+        if(!image.getOriginalFilename().equals("")){
+	        java.io.File destFile = new java.io.File(request.getSession().getServletContext().getRealPath("resources/userImages")+"\\"+image.getOriginalFilename());
+		    try{
+		        image.transferTo(destFile);
+		    }catch(IllegalStateException | IOException e){
+		        throw new RuntimeException(e.getMessage(),e);
+		    }
+        }
         if (message == null) {
             userMapper.myUpdate(user);
             userService.setCurrentUser(user);

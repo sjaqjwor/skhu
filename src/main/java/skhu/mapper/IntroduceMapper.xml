@@ -8,8 +8,22 @@
         WHERE i_id = 1
     </update>
     <select id="select" resultType="skhu.model.Introduce">
-    	select *
-    	from [INTRODUCE]
-    	where i_id = 1 
+       select *
+       from [INTRODUCE]
+       where i_id = 1 
     </select>
+    <update id="g_update">
+       UPDATE [GREETING]
+       SET g_name=#{g_name},g_content=#{g_content},g_photo=#{g_photo}
+       where g_id=#{g_id}
+    </update>
+    <select id="g_select" resultType="skhu.model.Greeting">
+       select *
+       from [GREETING]
+       where g_id=#{g_id}
+    </select>
+    <insert id="g_insert" useGeneratedKeys="true" keyProperty="id">
+       insert [GREETING] (g_name,g_content,g_photo)
+       value(#{g_name},#{g_content},#{g_photo})
+    </insert>
 </mapper>

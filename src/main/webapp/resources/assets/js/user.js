@@ -7,6 +7,7 @@ $(function() {
            center: 'screen'
        });
    });
+   
    $('#dropButton').on('click', function(event) {
        event.preventDefault();
        $.popupWindow('requestDrop.do', {

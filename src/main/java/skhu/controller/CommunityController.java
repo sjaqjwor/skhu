@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -77,13 +79,20 @@ public class CommunityController {
       Admin admin = userService.getCurrentAdmin();
       Page page = new Page("community");
       model.addAttribute("user", user);
+      if(admin!=null){
+         model.addAttribute("t",true);
+      }else{
+         model.addAttribute("f",false);
+      }
       model.addAttribute("page", page);
       model.addAttribute("rc",userService.getCount());
+      model.addAttribute("c", communityMapper.notice_comment(n_id));
+      model.addAttribute("max", communityMapper.max_nid());
       
       Notice notice = communityMapper.selectById(n_id);
       model.addAttribute("file", communityMapper.select_file_byn_Id(n_id));
    
-      
+
       model.addAttribute("notice", notice);
       int nid = Integer.parseInt(n_id);
       
@@ -142,6 +151,7 @@ public class CommunityController {
    public String notice_save(Model model, @RequestParam("title") String title, @RequestParam("body") String body,
          @RequestParam("file") MultipartFile[] uploadFiles) throws IOException {
       User user = userService.getCurrentUser();
+      Admin admin = userService.getCurrentAdmin();
       Page page = new Page("community");
       model.addAttribute("user", user);
       model.addAttribute("page", page);
@@ -153,11 +163,21 @@ public class CommunityController {
       else{
          for (MultipartFile uploadFile : uploadFiles) {
                 if (uploadFile.getSize() > 0) {
+                   if(user!=null){
                       communityMapper.notice_insert(user.getU_id(), user.getU_name(), title, body,true);
+                   }
+                   else if(admin !=null){
+                      communityMapper.notice_insert(admin.getA_id(), "관리자", title, body,true);
+                   }
                       break;
                 }
                 else{
-                   communityMapper.notice_insert(user.getU_id(), user.getU_name(), title, body,false);
+                   if(user!=null){
+                        communityMapper.notice_insert(user.getU_id(), user.getU_name(), title, body,false);
+                     }
+                     else if(admin !=null){
+                        communityMapper.notice_insert(admin.getA_id(), "관리자", title, body,false);
+                     }
                 }
          }
       for (MultipartFile uploadFile : uploadFiles) {
@@ -278,8 +298,15 @@ public class CommunityController {
       Admin admin = userService.getCurrentAdmin();
       Page page = new Page("community");
       model.addAttribute("user", user);
+      if(admin!=null){
+          model.addAttribute("t",true);
+       }else{
+          model.addAttribute("f",false);
+       }
       model.addAttribute("page", page);
       model.addAttribute("rc",userService.getCount());
+      model.addAttribute("c", communityMapper.board_comment(b_id));
+      model.addAttribute("max", communityMapper.max_nid());
       
       Board board = communityMapper.board_selectById(b_id);
       model.addAttribute("file", communityMapper.board_select_file_byb_Id(b_id));
@@ -288,7 +315,7 @@ public class CommunityController {
 
       
       if(user !=null){
-         String css = userService.board_Same_write_user(board, user);
+         String css = userService.board_Same_write_user(board,user);
          model.addAttribute("css", css);
       }else{
          model.addAttribute("css","inherit");
@@ -342,6 +369,7 @@ public class CommunityController {
    public String board_save(Model model, @RequestParam("title") String title, @RequestParam("body") String body,
          @RequestParam("file") MultipartFile[] uploadFiles) throws IOException {
       User user = userService.getCurrentUser();
+      Admin admin = userService.getCurrentAdmin();
       Page page = new Page("community");
       model.addAttribute("user", user);
       model.addAttribute("page", page);
@@ -352,13 +380,22 @@ public class CommunityController {
       }else{
          for (MultipartFile uploadFile : uploadFiles) {
              if (uploadFile.getSize() > 0) {
-                System.out.println("ㅋㄷㅋㄷ");
-                   communityMapper.board_insert(user.getU_id(), user.getU_name(), title, body,true);
-                   break;
-             }
-             else{
-                communityMapper.board_insert(user.getU_id(), user.getU_name(), title, body,false);
-             }
+                if(user!=null){
+                     communityMapper.board_insert(user.getU_id(), user.getU_name(), title, body,true);
+                  }
+                  else if(admin !=null){
+                     communityMapper.board_insert_ad(admin.getA_id(), "관리자", title, body,true);
+                  }
+                     break;
+               }
+               else{
+                  if(user!=null){
+                       communityMapper.board_insert(user.getU_id(), user.getU_name(), title, body,false);
+                    }
+                    else if(admin !=null){
+                       communityMapper.board_insert_ad(admin.getA_id(), "관리자", title, body,false);
+                    }
+               }
       }
      
       for (MultipartFile uploadFile : uploadFiles) {
@@ -446,22 +483,93 @@ public class CommunityController {
 
 
    @RequestMapping("/notice_comment.do")
-   public @ResponseBody JsonResult comment_insert(Comment comment, HttpServletResponse response) {
+   public @ResponseBody JsonResult_1 comment_insert(@RequestParam("n_id")int id,Comment comment,Model model, HttpServletResponse response) {
       response.addHeader("Access-Control-Allow-Origin", "*");
+      int a=communityMapper.max_nid()+1;
       User user = userService.getCurrentUser();
+      Admin admin = userService.getCurrentAdmin();
+      if(user!=null){
       comment.setC_writerId(user.getU_id());
       comment.setC_writerName(user.getU_name());
+      comment.setU_cNumber(user.getU_cNumber());
+      }else if(admin !=null){
+         comment.setC_writerId(admin.getA_id());
+         comment.setC_writerName("관리자");
+      }
+      comment.setN_id(id);
+      
       String c_content = comment.getC_content().replace("\r\n", "</br>");
       comment.setC_content(c_content);
-
-      return new JsonResult(true, true, true);
+      Date d  = new Date();
+      SimpleDateFormat t1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+      comment.setC_writeTime((String)t1.format(d));
+     
+     
+      communityMapper.comment_insert(comment);
+      communityMapper.count(id);
+      if(user!=null){
+      return new JsonResult_1(a,comment.getN_id(),user.getU_name(),user.getU_status(),user.getU_photo(),comment.getC_content(),(String)t1.format(d),user.getU_cNumber());
+      }
+      else{
+         return new JsonResult_1(a,comment.getN_id(),"관리자","관리자","admin.png",comment.getC_content(),(String)t1.format(d),0);
+      }
    }
 
    @RequestMapping("/comment_delete.do")
-   public @ResponseBody JsonResult comment_delete(Comment comment, HttpServletResponse response, Model model) {
+   public @ResponseBody JsonResult comment_delete(String name,String ki,HttpServletResponse response, Model model) {
       User user = userService.getCurrentUser();
-
-      
+      communityMapper.delete_comment(name);
+      System.out.println(ki);
+      communityMapper.count_d(ki);
       return new JsonResult(true, true, true);
    }
+   @RequestMapping("/comment_delete_b.do")
+   public @ResponseBody JsonResult comment_delete_b(String name,String ki,HttpServletResponse response, Model model) {
+      User user = userService.getCurrentUser();
+      communityMapper.delete_comment(name);
+      communityMapper.count_bd(ki);
+      return new JsonResult(true, true, true);
+   }
+   @RequestMapping("/comment_update.do")
+   public @ResponseBody JsonResult_1 comment_update(int id,String content,Model model, HttpServletResponse response) {
+    communityMapper.n_c(id, content);
+    return  new JsonResult_1(id,content);
+   }
+   
+   @RequestMapping("/board_comment.do")
+   public @ResponseBody JsonResult_1 b_comment_insert(@RequestParam("b_id")int id,Comment comment,Model model, HttpServletResponse response) {
+      response.addHeader("Access-Control-Allow-Origin", "*");
+     
+      int a=communityMapper.max_nid()+1;
+      User user = userService.getCurrentUser();
+      Admin admin = userService.getCurrentAdmin();
+      if(user!=null){
+      comment.setC_writerId(user.getU_id());
+      comment.setC_writerName(user.getU_name());
+      comment.setU_cNumber(user.getU_cNumber());
+      }else if(admin !=null){
+         comment.setC_writerId(admin.getA_id());
+         comment.setC_writerName("관리자");
+      }
+      comment.setB_id(id);
+      
+      String c_content = comment.getC_content().replace("\r\n", "</br>");
+      comment.setC_content(c_content);
+      Date d  = new Date();
+      SimpleDateFormat t1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+      comment.setC_writeTime((String)t1.format(d));
+     
+     
+      communityMapper.b_comment_insert(comment);
+      communityMapper.count_bb(id);
+      if(user!=null){
+      return new JsonResult_1(a,comment.getB_id(),user.getU_name(),user.getU_status(),user.getU_photo(),comment.getC_content(),(String)t1.format(d),user.getU_cNumber(),0);
+      }
+      else{
+         return new JsonResult_1(a,comment.getB_id(),"관리자","관리자","admin.png",comment.getC_content(),(String)t1.format(d),0,0);
+      }
+   }
+
+
+   
 }

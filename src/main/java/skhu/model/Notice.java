@@ -11,13 +11,20 @@ public class Notice {
    Date n_writeTime;
    String f_name;
    boolean n_file;
-   public boolean getN_file() {
-   return n_file;
-}
-public void setN_file(boolean n_file) {
-   this.n_file = n_file;
-}
-public String getF_name() {
+   int n_count;
+   public int getN_count() {
+      return n_count;
+   }
+   public void setN_count(int n_count) {
+      this.n_count = n_count;
+   }
+   public boolean isN_file() {
+      return n_file;
+   }
+   public void setN_file(boolean n_file) {
+      this.n_file = n_file;
+   }
+   public String getF_name() {
       return f_name;
    }
    public void setF_name(String f_name) {

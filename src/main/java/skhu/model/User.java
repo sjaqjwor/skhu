@@ -1,18 +1,23 @@
 package skhu.model;
 
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class User {
 	private String u_id;
 	private String u_loginId;
 	private String u_password;
 	private String u_name;
-	private int u_cNumber;
+	private Integer u_cNumber;
 	private String u_status;
 	private Date u_birth;
+	private String u_birth2;
 	private String u_phone;
 	private String u_email;
 	private String u_address;
+	private String u_jobName;
 	private String u_jobPhone;
 	private String u_jobStatus;
 	private String u_photo;
@@ -20,10 +25,17 @@ public class User {
 	private Boolean u_openPhone;
 	private Boolean u_openEmail;
 	private Boolean u_openAddress;
+	private Boolean u_openJobName;
 	private Boolean u_openJobPhone;
 	private Boolean u_openJobStatus;
 	private Boolean u_openPhoto;
 	private Boolean u_count;
+	
+	//user register validate css option
+	private String val_cNumber="border: 0;";
+	private String val_name="border: 0;";
+	private String val_phone="border: 0;";
+	private String val_birth="border: 0;";
 	
 	public String getU_id() {
 		return u_id;
@@ -49,10 +61,10 @@ public class User {
 	public void setU_name(String u_name) {
 		this.u_name = u_name;
 	}
-	public int getU_cNumber() {
+	public Integer getU_cNumber() {
 		return u_cNumber;
 	}
-	public void setU_cNumber(int u_cNumber) {
+	public void setU_cNumber(Integer u_cNumber) {
 		this.u_cNumber = u_cNumber;
 	}
 	public String getU_status() {
@@ -66,6 +78,26 @@ public class User {
 	}
 	public void setU_birth(Date u_birth) {
 		this.u_birth = u_birth;
+	}
+	public String getU_birth2(){
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		if(u_birth==null){
+			return u_birth2;
+		}
+		return format.format(u_birth);
+	}
+	public void setU_birth2(String u_birth2){
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			if(u_birth2.matches("(19|20)[0-9]{2}-((0[1-9])|(1[012]))-[0-3][0-9]")){
+				u_birth=new java.sql.Date(format.parse(u_birth2).getTime());
+			}else{
+				this.u_birth2=u_birth2;
+			}
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public String getU_phone() {
 		return u_phone;
@@ -84,6 +116,12 @@ public class User {
 	}
 	public void setU_address(String u_address) {
 		this.u_address = u_address;
+	}
+	public String getU_jobName(){
+		return u_jobName;
+	}
+	public void setU_jobName(String u_jobName){
+		this.u_jobName=u_jobName;
 	}
 	public String getU_jobPhone() {
 		return u_jobPhone;
@@ -127,6 +165,12 @@ public class User {
 	public void setU_openAddress(Boolean u_openAddress) {
 		this.u_openAddress = u_openAddress;
 	}
+	public Boolean getU_openJobName() {
+		return u_openJobName;
+	}
+	public void setU_openJobName(Boolean u_openJobName) {
+		this.u_openJobName = u_openJobName;
+	}
 	public Boolean getU_openJobPhone() {
 		return u_openJobPhone;
 	}
@@ -150,5 +194,31 @@ public class User {
 	}
 	public void setU_count(Boolean u_count) {
 		this.u_count = u_count;
+	}
+	
+	//user register validate css option
+	public String getVal_cNumber(){
+		return val_cNumber;
+	}
+	public void setVal_cNumber(String val_cNumber){
+		this.val_cNumber = val_cNumber;
+	}
+	public String getVal_name(){
+		return val_name;
+	}
+	public void setVal_name(String val_name){
+		this.val_name = val_name;
+	}
+	public String getVal_phone(){
+		return val_phone;
+	}
+	public void setVal_phone(String val_phone){
+		this.val_phone = val_phone;
+	}
+	public String getVal_birth(){
+		return val_birth;
+	}
+	public void setVal_birth(String val_birth){
+		this.val_birth = val_birth;
 	}
 }

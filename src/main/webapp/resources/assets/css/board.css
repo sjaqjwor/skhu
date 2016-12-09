@@ -8,6 +8,72 @@
    url(http://fonts.googleapis.com/earlyaccess/nanumbrushscript.css);
 
 @media screen and (max-width: 1680px) {
+   #c_f{
+   margin:0!important;}
+   #com{
+      border-bottom:1px dotted;
+      border-color:#a99a9a;
+      padding-top:1%;
+      padding-bottom:1%;
+      text-align:left;
+   }
+   #com>div{
+      padding-left:1.2%;
+      padding-top:1.2%;
+      width:70%;
+      vertical-align:top;
+   }
+   #cont{
+    padding-top: 1.2%;
+    width: 100%;
+    vertical-align: top;
+    padding-left: 1.2%;
+   }
+   #com>img{
+   border-radius: 66%;
+    width: 5%;
+    margin-left: 2%;
+    margin-top: 1%;
+    }
+   #com>div span:nth-child(2){
+      font-size:130%;
+   }
+   #c_ad{
+      float:right;
+      margin-right:2%;
+      margin-top:2%;
+      color:#a99a9a;
+      border:0;
+      background-color:#dcd0d0;
+   }
+   #c_ca{
+      float:right;
+      margin-right:2%;
+      margin-top:2%;
+      color:#a99a9a;
+      border:0;
+      background-color:#dcd0d0;
+   }
+   #c_de{
+      float:right;
+      color:#a99a9a;
+      margin-top:2%;
+      border:0;
+      background-color:#dcd0d0;
+   }
+   #c_de_{
+      float:right;
+      color:#a99a9a;
+      margin-top:2%;
+      border:0;
+      background-color:#dcd0d0;
+   }
+   
+   #s{
+      font-size:105%;
+      color:#a99a9a;
+      margin-left:2%;
+   }
    .true{
       width:20px;
       height:20px;
@@ -197,6 +263,20 @@
       
    }
    #register {
+      width: 100%;
+      height: 100%;
+      border: 0px;
+      background-color: white;
+      margin-bottom: -4%;
+   }
+    #register_b {
+      width: 100%;
+      height: 100%;
+      border: 0px;
+      background-color: white;
+      margin-bottom: -4%;
+   }
+    #register_c {
       width: 100%;
       height: 100%;
       border: 0px;

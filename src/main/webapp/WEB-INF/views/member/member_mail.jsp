@@ -1,3 +1,4 @@
+<!-- member_mail.jsp -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -27,7 +28,7 @@
         });
         $("div.pagination a").click(function() {
             $("input[name=pg]").val($(this).attr("data-page"));
-            $("form").submit();
+            $("#pgna").submit();
         });
         $("[data-auto-submit=true]").change(function() {
             $(this).parents("form").submit();
@@ -35,23 +36,31 @@
         $('#chkall').click(function() {
             $("#chk input[type=checkbox]").trigger("click");
         });
-        $("#sendmail").click(function() {
+        $("#sendmail").click(function(e) {
            var chckType = document.getElementsByName('uid'); 
-           if( ! confirm("선택된 사람들에게 메일을 보냅니다.") ){
-               preventDefault();
-           } else {
-              for(i = 0; i < chckType.length; i++){
-                 if (chckType[i].checked == false){
-                    alert("하나라도 선택하셔야해요");
-                    preventDefault();
-                 } else {
-                    document.form.submit();
-                 }
-              }
-           }   
+           var cnt = 0;
+           for(i = 0; i < chckType.length; i++){
+               if (chckType[i].checked == true)
+                  cnt++;
+            }
+            if(cnt==0){
+               alert("하나라도 선택하셔야해요");
+                e.preventDefault();
+            }else{
+               if( ! confirm("선택된 사람들에게 보낼 메일을 작성합니다.") ){
+                    e.preventDefault();
+                } else {
+                   document.form.submit();
+                } 
+            }
         });
    });
     
+    
+     
+
+ 
+ //document.form.submit();
 </script>
 </head>
 <body>
@@ -63,7 +72,7 @@
        <hr />
        <h1>회원 목록</h1>
        <hr />
-       <form:form method="get" modelAttribute="paginationM">
+       <form:form id="pgna" method="get" modelAttribute="paginationM">
           <input type="hidden" name="pg" value="1" />
        
           <span style="display: inline-block; margin-bottom: 5px;">사이즈</span>
@@ -104,9 +113,9 @@
            <tbody>
                <c:forEach var="user" items="${ list }">
                    <tr data-url="user_edit.do?id=${ user.u_loginId }&${paginationM.queryString}">
-                      <form id="mailform" method="post" action="${pageContext.request.contextPath}/member/member_send.do" style="display: inline;">
+                      <form id="mailform" method="get" action="${pageContext.request.contextPath}/member/member_send.do" style="display: inline;">
                       <td id="chk"><input type="checkbox" name="uid" value="${ user.u_id }"></td>
-                      <td><image style="width:50px;height:50px;" src="${pageContext.request.contextPath}/resources/userImages/no_pic.gif" 
+                      <td><image style="width:50px;height:50px;" src="${pageContext.request.contextPath}/resources/userImages/${user.u_photo}" 
                          onError='this.src="${pageContext.request.contextPath}/resources/userImages/no_pic.gif"'></td>
                        <td>${ user.u_loginId }</td>
                        <td>${ user.u_name }</td>
@@ -128,9 +137,8 @@
                </c:forEach>
                
            </ul>
-       </div>
-       <button id="sendmail" class="btn" style="float:right;">메일보내기</button>
-       </form>
+           <button id="sendmail" class="btn" style="float:right;">메일 작성</button>
+       </div>       
    </div>
 
    </div>

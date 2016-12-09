@@ -66,7 +66,6 @@ public class ExcelCellRef {
                 value = cell.getStringCellValue();
             }
         }
-        
         return value;
     }
  

@@ -130,11 +130,17 @@ public class UserService {
 	         return "none";
 	}
 	public String board_Same_write_user(Board board,User user){
-	      if(board.getB_writerId().equals(user.getU_id())){
-	         return "inherit";
-	      }
-	      else
-	         return "none";
+	       if(board.getB_writerId() ==null){
+	          return "none";
+	       }
+	       else{
+	    	   if(board.getB_writerId().equals(user.getU_id())){
+	    		   return "inherit";
+	    	   }
+	    	   else
+	    		   return "none";
+	       }
+	         
 	}
 	public String status(String status){
 	      if(Pattern.matches("^[0-9a-zA-Z]*$",status.substring(0,1))==true||status.substring(0,1).equals("회")

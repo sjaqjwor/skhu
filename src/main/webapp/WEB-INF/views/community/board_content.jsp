@@ -124,15 +124,54 @@ $(function(){
                   </tr>
                
                
-                  
-               
-                  <tr>
+                 
+                  <tr id="co">
                   <td colspan="4" style="background-color:#dcd0d0;">
+                  <div id="here">
+                     <c:forEach var="k" items="${c}">
+                     <form id="c_f" class="${k.c_id}">
+                     <input type="hidden" name="n_id_" value="${ board.b_id}">
+                     <input type="hidden" id="max" value="${ max}">
+                     <div id="com" class="com">
+                     <c:if test="${k.u_photo eq null}">
+                        <img src="/skhu/resources/userImages/${k.a_photo}">
+                     </c:if>
+                     <c:if test="${k.a_photo eq null}">
+                     <img src="/skhu/resources/userImages/${k.u_photo}">
+                     </c:if>
+                        
+                        
+                           <div style="display:inline-block;" class="k">
+                              <input type="hidden" value="${k.c_id }">
+                             <span>${k.c_writerName }
+                             <c:if test="${k.u_cNumber ne 0}">(${k.u_cNumber}기)</c:if></span>
+                              <span id="s">${k.c_writeTime}</span>
+                              
+                              <div id="cont">${k.c_content}</div>
+                              
+                           </div>
+                           <c:if test="${user.u_id eq k.c_writerId}">
+                           <button type="button" id="c_ad" value="${k.c_id }">수정</button>
+                            <button type="button" id="c_de_" value="${k.c_id }">삭제</button>
+                            </c:if>
+                            <c:if test="${t eq true}">
+                           <button type="button" id="c_ad" value="${k.c_id }">수정</button>
+                            <button type="button" id="c_de_" value="${k.c_id }">삭제</button>
+                            </c:if>
+                     </div>
+                     
+                     
+                     </form>
+                     </c:forEach>
+                  </div>
+            
                   <form id="comment">
-                     <textarea  name="c_content" maxlength="6000"style="resize:none;width:70%; margin-top:2%; margin-left:3%;overflow: hidden;line-height: 14px;height: 60px;"></textarea>
-                     <input type="hidden" name="n_id" value="${notice.n_id }">
+                     <textarea name="c_content" maxlength="6000"style="resize:none;width:70%; margin-top:2%; margin-left:3%;overflow: hidden;line-height: 14px;height: 60px;"></textarea>
+                     <input type="hidden" name="b_id" value="${board.b_id }">
+                     <input type="hidden" name="c_id" value="${max+1 }">
+                     
                      <div class="my_up">
-                        <button id="register">등록</button>
+                        <button type="button" id="register_b">등록</button>
                      </div>
                   </form>
                   </td>

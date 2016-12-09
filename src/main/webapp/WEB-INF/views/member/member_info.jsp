@@ -1,3 +1,4 @@
+<!-- member_info.jsp -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -98,14 +99,14 @@ input[type="text"], input[type="password"], input[type="email"],
                         <div class="controls">
                            <input type="text" value="${mem.u_cNumber}기 ${mem.u_status}"
                               class="input-xlarge" style="height: 25px;" readonly />
-                           <c:if test="${user.u_cNumber eq mem.u_cNumber&&(user.u_status eq \"회장\"||user.u_status eq \"부회장\")}">
+                           <c:if test="${user.u_cNumber eq mem.u_cNumber&&(user.u_status eq \"회장\"||user.u_status eq \"부회장\")&&mem.u_status ne \"회장\"&&mem.u_id ne user.u_id}">
+                               
                                  <form method="get" style="display: inline;">
                                     <input type="hidden" name="uid" value="${mem.u_id}"/>
                                     <input type="hidden" name="ustatus" value="${mem.u_status}"/>
-                                    <input type="hidden" name="u_id" value="${user.u_id}"/>
-                                    <input type="hidden" name="u_status" value="${user.u_status}"/>
-                                  <button id="mngsel" class="btn" style="margin-bottom:5px;margin-top:-2px;">위임</button>
+                                  <button id="mngsel" class="btn" style="margin-bottom:5px;margin-top:-2px;">양도</button>
                                </form>
+                               
                            </c:if>
                               
                            
@@ -213,6 +214,34 @@ input[type="text"], input[type="password"], input[type="email"],
                            </c:choose>
                         </div>
                      </div>
+                     
+                     <div class="control-group">
+                        <label class="control-label" for="name">소속직장</label>
+                        <div class="controls">
+                           <c:choose>
+                              <c:when test="${mem.u_openJobName eq true || (user.u_cNumber eq mem.u_cNumber&&(user.u_status eq \"회장\"||user.u_status eq \"부회장\"))}">
+                                 <input type="text" value="${mem.u_jobName}" class="input-xlarge" style="height: 25px;" readonly />
+                              </c:when>
+                              <c:otherwise>
+                                 <input type="text" value="비공개" class="input-xlarge" style="height: 25px;" readonly />
+                              </c:otherwise>
+                           </c:choose>
+                        </div>
+                     </div>
+                     
+                     <div class="control-group">
+                        <label class="control-label" for="name">직장지위</label>
+                        <div class="controls">
+                           <c:choose>
+                              <c:when test="${mem.u_openJobStatus eq true || (user.u_cNumber eq mem.u_cNumber&&(user.u_status eq \"회장\"||user.u_status eq \"부회장\"))}">
+                                 <input type="text" value="${mem.u_jobStatus}" class="input-xlarge" style="height: 25px;" readonly />
+                              </c:when>
+                              <c:otherwise>
+                                 <input type="text" value="비공개" class="input-xlarge" style="height: 25px;" readonly />
+                              </c:otherwise>
+                           </c:choose>
+                        </div>
+                     </div>
 
                      <div class="control-group">
                         <label class="control-label" for="name">직장전화</label>
@@ -228,19 +257,6 @@ input[type="text"], input[type="password"], input[type="email"],
                         </div>
                      </div>
 
-                     <div class="control-group">
-                        <label class="control-label" for="name">직장지위</label>
-                        <div class="controls">
-                           <c:choose>
-                              <c:when test="${mem.u_openJobStatus eq true || (user.u_cNumber eq mem.u_cNumber&&(user.u_status eq \"회장\"||user.u_status eq \"부회장\"))}">
-                                 <input type="text" value="${mem.u_jobStatus}" class="input-xlarge" style="height: 25px;" readonly />
-                              </c:when>
-                              <c:otherwise>
-                                 <input type="text" value="비공개" class="input-xlarge" style="height: 25px;" readonly />
-                              </c:otherwise>
-                           </c:choose>
-                        </div>
-                     </div>
                      </sec:authorize>
          </c:forEach>
          <div class="control-group">
@@ -248,10 +264,9 @@ input[type="text"], input[type="password"], input[type="email"],
                <form method="post" class="gisuform"
                   action="${pageContext.request.contextPath}/member/cardinalList.do?selgisu=${selgisu}"
                   style="margin-left: 12px; margin-right: 20px; margin-top: -15px">
-                  <input type="hidden" name="searchsel" value="${searchsel}" /> <input
-                     type="hidden" name="searchtxt" value="${searchtxt}" /><br/>
-                  <button type="button" style="display:none;"></button>
-                  <button type="button" class="btn"><a href="cardinalList.do?selgisu=0">목록으로 나가기</a></button>
+                  <input type="hidden" name="searchsel" value="${searchsel}" />
+                  <input type="hidden" name="searchtxt" value="${searchtxt}" /><br/>
+                  <button type="submit" class="btn">목록으로 나가기</button>
                </form>
             </div>
 
@@ -289,10 +304,11 @@ input[type="text"], input[type="password"], input[type="email"],
    document
    .getElementById("mngsel")
    .addEventListener("click", function( e ){
-       if( ! confirm("직책을 위임합니다.") ){
+       if( ! confirm("직책을 양도합니다.") ){
           e.preventDefault();
        } else {
-          //alert("로그아웃됩니다.");
+          alert("로그아웃됩니다.");
+          location.href="../main/logout.do";
           document.form.submit();
        }
    });

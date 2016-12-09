@@ -16,8 +16,24 @@
    rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/register.css" />
 <title>성공회대 총동문회</title>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> 
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/assets/js/jquery.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/resources/assets/js/jquery.maskedinput.js" type="text/javascript"></script> 
 <script>
+$(function(){
+    $("#allCheck").click(function(){
+		if($("#allCheck").prop("checked")) {
+			$("input[type=checkbox]").prop("checked",true);
+		} else {
+			$("input[type=checkbox]").prop("checked",false);
+		}
+	})
+})
+jQuery(function($){
+   $(".date").mask("9999-99-99",{placeholder:"____-__-__"});
+   $(".phone").mask("999-9999-9999",{placeholder:"___-____-____"});   
+   $(".jobPhone").mask("99-999-9999",{placeholder:"__-___-____"});
+});
 function checkFileType(filePath) {
     var fileFormat = filePath.split(".");
     if (fileFormat.indexOf("xlsx") > -1) {
@@ -58,36 +74,54 @@ function register(){
 			<form id="excelForm" enctype="multipart/form-data" method="post" action="upload.do" >
         		<input id="excelFile" type="file" name="excelFile"/>
         		<button id="uploadButton" type="button" onclick="upload()" class="btn btn-success" style="margin-bottom: 5px;">업로드</button>
+        		<c:if test="${ not empty error }">
+	        		<div class="alert alert-error">${ error }</div>
+	    		</c:if>
+	    		<c:if test="${ not empty success }">
+	        		<div class="alert alert-success">${ success }</div>
+	    		</c:if>
     		</form>
     		
     		<form:form id="userForm" method="post" action="register.do" modelAttribute="userForm" >
     		<table class="table table-bordered" style="margin-top:15px; margin-bottom:15px;">
 	        <thead>
 	            <tr>
-	            	<th style="width:50px;">번호</th>
-	            	<th style="width:70px;">이름</th>
-	                <th style="width:50px;">기수</th>
-	                <th style="width:100px;">등급</th>
-	   				<th style="width:100px;">생년월일</th>
-	   				<th>핸드폰</th>
-	   				<th>이메일</th>
-	   				<th>주소</th>
+	            	<th style="width:60px;"><input id="allCheck" type="checkbox" style="margin-bottom:7px;" checked>열번</th>
+	            	<th style="width:40px;">기수</th>
+	            	<th style="width:70px;">사진</th>
+	                <th style="width:70px;">성명</th>
+	                <th style="width:100px;">소속</th>
+	                <th style="width:70px;">지위</th>
+	   				<th style="width:100px;">핸드폰</th>
 	   				<th style="width:100px;">직장전화</th>
-	   				<th style="width:100px;">직장지위</th>           
+	   				<th style="width:100px;">이메일</th>
+	   				<th style="width:100px;">근무지 주소</th>
+	   				<th style="width:100px;">생년월일</th>
 	            </tr>
 	        </thead>
 	        <c:forEach var="item" items="${userForm.users}" varStatus="status">
 	        		<tr>
-	        			<td align="Center">${status.count }</td>
-	        			<td><input name="users[${status.index }].u_name" value="${item.u_name }" style="width:100%; border: 0; text-align: center"/></td>
-		                <td><input name="users[${status.index }].u_cNumber" value="${item.u_cNumber }" style="width:100%; border: 0; text-align: center"/></td>
-		                <td><input name="users[${status.index }].u_status" value="${item.u_status }" style="width:100%; border: 0; text-align: center"/></td>
-	   					<td><input name="users[${status.index }].u_birth" value="${item.u_birth }" style="width:100%; border: 0; text-align: center"/></td>
-	   					<td><input name="users[${status.index }].u_phone" value="${item.u_phone }" style="width:100%; border: 0; text-align: center"/></td>
-	   					<td><input name="users[${status.index }].u_email" value="${item.u_email }" style="width:100%; border: 0; text-align: center"/></td>
-	   					<td><input name="users[${status.index }].u_address" value="${item.u_address }" style="width:100%; border: 0; text-align: center"/></td>
-	   					<td><input name="users[${status.index }].u_jobPhone" value="${item.u_jobPhone }" style="width:100%; border: 0; text-align: center"/></td>
+	        			<td align="Center"><input type="checkbox" name="values" value="${status.count}" style="border: 0; text-align: center;margin-bottom: 8px;" checked>${status.count }</td>
+	        			<td><input name="users[${status.index }].u_cNumber" value="${item.u_cNumber }" style="${item.val_cNumber} width:100%; text-align: center"/></td>
+		                <td>
+		                <input name="users[${status.index }].u_photo" value="${item.u_photo }" style="display:none; width:100%; border: 0; text-align: center"/>
+		                <c:if test="${empty item.u_photo }">
+	                		<image style="width:50px;height:50px;" src="${pageContext.request.contextPath}/resources/userImages/no_pic.gif">
+	                	</c:if>
+		                <c:if test="${not empty item.u_photo }">
+	                		<image style="width:50px;height:50px;" src="${pageContext.request.contextPath}/resources/userImages/${item.u_photo}"
+	                		onError='this.src="${pageContext.request.contextPath}/resources/userImages/no_pic.gif"'>
+	                	</c:if>
+		                </td>
+		                <td><input name="users[${status.index }].u_name" value="${item.u_name }" style="${item.val_name} width:100%; text-align: center"/></td>
+	   					<td><input name="users[${status.index }].u_jobName" value="${item.u_jobName }" style="width:100%; border: 0; text-align: center"/></td>
 	   					<td><input name="users[${status.index }].u_jobStatus" value="${item.u_jobStatus }" style="width:100%; border: 0; text-align: center"/></td>
+	   					<td><input class="phone" name="users[${status.index }].u_phone" value="${item.u_phone }" style="${item.val_phone} width:100%; text-align: center"/></td>
+	   					<td><input class="jobPhone" name="users[${status.index }].u_jobPhone" value="${item.u_jobPhone }" style="width:100%; border: 0; text-align: center"/></td>
+	   					<td><input id="email" name="users[${status.index }].u_email" value="${item.u_email }" style="width:100%; border: 0; text-align: center"/></td>
+	   					<td><input name="users[${status.index }].u_address" value="${item.u_address }" style="width:100%; border: 0; text-align: center"/></td>
+	   					<td><input class="date" name="users[${status.index }].u_birth2" value="${item.u_birth2 }" style="${item.val_birth} width:100%;text-align: center"/></td>
+	   					
 	                </tr>
 	        </c:forEach>
                   
